@@ -19,7 +19,7 @@ const reqHand = (req, res) => {
 
     req.on("end", () => {
       const parsedBody = Buffer.concat(text).toString();
-      const message = parsedBody.split("=")[1];
+      const message = parsedBody.split("=")[0];
       fs.writeFile("text.txt", message, (err) => {
         if (err) {
           res.statusCode = 500;
