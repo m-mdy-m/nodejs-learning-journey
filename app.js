@@ -1,10 +1,16 @@
 const http = require("http");
-const express = require("express")
-const app = express()
+const express = require("express");
+const app = express();
 // const router = require("./routes.js")
 // console.log(router.someText);
 // const server = http.createServer(router.handlre )
-const server = http.createServer(app)
+
+app.use((req, res, next) => {
+  res.send("hi this is test");
+  console.log("next =>", next); 
+  next();
+});
+const server = http.createServer(app);
 server.listen(80, () => {
   console.log("run server port 80");
 });
