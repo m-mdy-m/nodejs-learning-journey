@@ -32,7 +32,10 @@ const reqHand = (req, res) => {
     });
   }
 };
-module.exports = {
-    handlre : reqHand,
-    someText : "HI",
-}
+// module.exports = {
+//   handlre: reqHand,
+//   someText: "HI",
+// };
+
+module.exports.handlre = reqHand;
+module.exports.someText = "hi my name is mahdi";
