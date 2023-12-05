@@ -2,7 +2,6 @@ const http = require("http");
 const fs = require('fs');
 
 const server = http.createServer((req, res) => {
-  console.log(req.url, req.method, req.headers);
   const url = req.url;
   const method = req.method;
   res.setHeader("Content-Type", "text/html");
@@ -18,16 +17,25 @@ const server = http.createServer((req, res) => {
   } else if (url === "/test") {
     res.write("hi this is test for url => /test");
     res.end();
-  } else if (url === "/message" && method === "POST") { // Only allow POST requests to this path.
-    fs.writeFile("msg.txt", "hi", (err) => { // Asynchronously write file.
+  } else if (url === "/message" && method === "POST") { 
+    const body = []
+    req.on("data",(chunk)=>{
+        console.log(chunk);
+        body.pus(chunk)
+    })
+    req.on("end",()=>{
+        const parseBody = Buffer.concat(body).toString()
+        console.log(parseBody);
+    })
+    fs.writeFile("msg.txt", "hi", (err) => { 
       if (err) {
         console.error(err);
-        res.statusCode = 500; // Internal Server Error
+        res.statusCode = 500; 
         res.end();
         return;
       }
-      res.statusCode = 302; // Set status code to 'Found' (commonly used for redirection).
-      res.setHeader("Location", "/"); // Redirect to root.
+      res.statusCode = 302; 
+      res.setHeader("Location", "/"); 
       res.end();
     });
   } else {
