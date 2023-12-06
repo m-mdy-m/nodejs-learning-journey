@@ -4,9 +4,13 @@ const routeDir = require("./util/path.js");
 const express = require("express");
 
 const bodyParser = require("body-parser");
-
+const expressHbs = require("express-handlebars");
 const app = express();
-app.set("view engine", "pug");
+
+app.engine('hbs', expressHbs({
+  layoutsDir:'views/layouts', defaultLayout:'main-layout'
+}))
+app.set("view engine", "hbs");
 app.set("views", "views");
 const AdminRouter = require("./routes/admin.js");
 const ShopRouter = require("./routes/shop.js");
@@ -18,9 +22,9 @@ app.use("/admin", AdminRouter.router);
 app.use(ShopRouter);
 
 app.use((req, res, next) => {
-  res.status(404).render('404',{pageTitle : "pages 404"})
+	res.status(404).render("404", { pageTitle: "pages 404" });
 });
 
 app.listen(3000, () => {
-  console.log("Server running on port 3000");
+	console.log("Server running on port 3000");
 });
