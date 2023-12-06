@@ -1,19 +1,9 @@
-doctype html
-html(lang="en")
-    head
-        meta(charset="UTF-8")
-        meta(name="viewport", content="width=device-width, initial-scale=1.0")
-        title #{pageTitle}
-        link(rel="stylesheet", href="/css/main.css")
-        link(rel="stylesheet", href="/css/products.css")
-    body 
-     header.main_header 
-        nav.main_header-nav 
-            ul.main_header-list 
-                li.main_header-item
-                    a.active(href="/") Shop
-                li.main_header-item
-                    a(href="/admin/add-product") add Product
+//- extends main template 
+extends layouts/main-layouts.pug 
+block styles 
+    link(rel="stylesheet", href="/css/products.css") 
+
+block content 
     main 
         form.forms(action="/admin/product" method='POST') 
             input.input_product(type="text" name="title")

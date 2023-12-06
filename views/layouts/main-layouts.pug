@@ -1,0 +1,19 @@
+//- Main template of pages
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title #{pageTitle}
+        link(rel="stylesheet", href="/css/main.css")
+        block styles 
+    body 
+    header.main_header 
+        nav.main_header-nav 
+            ul.main_header-list 
+                li.main_header-item
+                    a.active(href="/") Shop
+                li.main_header-item
+                    a(href="/admin/add-product") add Product
+
+    block content 
