@@ -1,0 +1,3 @@
+## what is project?
+
+<p>Crate&Display is a streamlined mini-project focused on showcasing the core functionalities of an Express.js server with Pug template engine integration. This repository features a concise platform for adding products, where users can input product details, which are then listed and managed within the application. Emphasizing simplicity and efficient design, the project includes a custom 404 page, demonstrating graceful handling of undefined routes. Crate&Display serves as an excellent exercise and reference for building web applications with server-side rendering using Express and Pug, proving that functionality and elegance can coexist in minimalist software architecture.</p>
