@@ -1,3 +1,10 @@
-## what is project?
+## Progressive Enhancement
 
-<p>Crate&Display is a streamlined mini-project focused on showcasing the core functionalities of an Express.js server with Pug template engine integration. This repository features a concise platform for adding products, where users can input product details, which are then listed and managed within the application. Emphasizing simplicity and efficient design, the project includes a custom 404 page, demonstrating graceful handling of undefined routes. Crate&Display serves as an excellent exercise and reference for building web applications with server-side rendering using Express and Pug, proving that functionality and elegance can coexist in minimalist software architecture.</p>
+Box&Reveal HBS is the latest iteration of a practice project aimed at honing server-side rendering skills through progressively enhancing the application's technology stack. What started as a basic HTTP server with static HTML has evolved into a more sophisticated Express.js application. Here’s how it's developed over time:
+
+- **Version 1**: A simple server using Node.js's HTTP module coupled with HTML for rendering.
+- **Version 2**: Introduction of Express.js, enhancing routing and server capabilities.
+- **Version 3**: Integration of the Pug template engine, allowing for dynamic content generation.
+- **Version 4**: Transition to Handlebars (HBS), modernizing the project with a new templating engine renowned for its logic-less templates and powerful UI building features.
+
+With each step, Box&Reveal HBS has improved its ability to handle data more efficiently, provide a richer user experience, and simplify the development process. This version focuses on utilizing HBS to efficiently manage and display product details while maintaining a clear and flexible codebase.
