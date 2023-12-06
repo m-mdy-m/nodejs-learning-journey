@@ -1,22 +1,38 @@
-// Import the express module
+// Import express package for creating server and handling routes
 const express = require("express");
-
-// Create an Express application
+// Import body-parser package to parse incoming request bodies
+const bodyParser = require("body-parser");
+// Initialize a new Express application
 const app = express();
 
-// This is middleware that processes every request that comes in.
-app.use((req, res, next) => {
-  // Send a response with the text "hi this is test" to the client
-  res.send("hi this is test");
-  
-  // Log the 'next' function to the console for demonstration purposes
-  console.log("next =>", next);
+// Parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({extended :false}));
 
-  // Proceed to the next middleware (if there is none, this does nothing)
-  next();
+// Serve HTML form at the '/add-product' GET route
+app.get("/add-product", (req, res, next) => {
+  // Respond with a simple form for inputting product data
+  res.send(`
+    <form action="/product" method="POST">
+      <input type="text" name="productName" placeholder="Enter product name" >
+      <button type="submit">Add Product</button>
+    </form>`);
 });
 
-// Start the Express application server on port 3000 and log a message to the console.
-app.listen(3000,()=>{
-    console.log('Server running on port 3000');
+// Handle form submission at the '/product' POST route
+app.post("/product", (req, res, next) => {
+  // Log submitted product data to the console
+  console.log(req.body);
+  // Redirect to the home page after submission
+  res.redirect('/');
+});
+
+// Define a GET route for the home page
+app.use("/", (req, res, next) => {
+  // Send a basic welcome message
+  res.send("<h1>Welcome to the Basic Product Adder App</h1>");
+});
+
+// Start the server on port 3000
+app.listen(3000, () => {
+  console.log("Server running on port 3000");
 });
