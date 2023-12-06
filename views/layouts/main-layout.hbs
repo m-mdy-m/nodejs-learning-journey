@@ -4,16 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ pageTitle }}</title>
-    <link rel="stylesheet" href="/css/main.css">
+    {{#if productsCSS}}
+    <link rel="stylesheet" href="/css/products.css">
+    {{/if}}
 </head>
 <body>
     <header class="main_header">
         <nav class="main_header-nav">
             <ul class="main_header-list">
-                <li class="main_header-item"><a href="/"></a></li>
-                <li class="main_header-item"><a href="/admin/add-product"></a></li>
+                <li class="main_header-item"><a class="{{#if activeShop }}active{{/if}}" href="/"></a></li>
+                <li class="main_header-item"><a class="{{#if activeAddProduct }}active{{/if}}" href="/admin/add-product"></a></li>
             </ul>
         </nav>
     </header>
+    {{{ body }}}
 </body>
 </html>

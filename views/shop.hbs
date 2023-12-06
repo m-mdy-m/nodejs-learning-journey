@@ -1,35 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ pageTitle }}</title>
-    <link rel="stylesheet" href="/css/main.css">
-    <link rel="stylesheet" href="/css/products.css">
-</head>
-<body>
-    <header class="main_header">
-        <nav class="main_header-nav">
-            <ul class="main_header-list">
-                <li class="main_header-item"><a href="/"></a></li>
-                <li class="main_header-item"><a href="/admin/add-product"></a></li>
-            </ul>
-        </nav>
-    </header>
-    <main>
-        {{#if hasProducts }}
-            <div>
-                {{#each prods}}
-                    <article>
-                        <h1 class="products__title"> {{ this.title }} </h1>
-                        <h3 class="product__price"> $2042 </h3>
-                
-                    </article>
-                {{/each}}
-            </div>
-        {{ else }}
-            <h1>not products</h1>
-        {{/if}}
-    </main>
-</body>
-</html>
+<main>
+	{{#if hasProducts}}
+		<div>
+			{{#each prods}}
+				<article>
+					<h1 class="products__title"> {{this.title}} </h1>
+					<h3 class="product__price"> $2042 </h3>
+				</article>
+			{{/each}}
+		</div>
+	{{else}}
+		<h1>not products</h1>
+	{{/if}}
+</main>
