@@ -4,14 +4,9 @@ const routeDir = require("./util/path.js");
 const express = require("express");
 
 const bodyParser = require("body-parser");
-const expressHbs = require("express-handlebars");
 const app = express();
 
-app.engine('hbs', expressHbs.engine({
-  defaultLayout: "main-layout", 
-  extname: 'hbs'                
-}));
-app.set("view engine", "hbs");
+app.set("view engine", "ejs");
 app.set("views", "views");
 const AdminRouter = require("./routes/admin.js");
 const ShopRouter = require("./routes/shop.js");
