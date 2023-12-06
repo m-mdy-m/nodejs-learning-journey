@@ -3,24 +3,18 @@ html(lang="en")
     head
         meta(charset="UTF-8")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
-        title #{docTitle}
+        title #{pageTitle}
         link(rel="stylesheet", href="/css/main.css")
         link(rel="stylesheet", href="/css/products.css")
     body 
-    header.main_header 
+     header.main_header 
         nav.main_header-nav 
             ul.main_header-list 
                 li.main_header-item
                     a.active(href="/") Shop
                 li.main_header-item
                     a(href="/admin/add-product") add Product
-
-        main
-            if prods.length > 0
-                each product in  prods
-                    article.card.product-item
-                        h1.product__title #{product.title}
-                        h2.product__price $20
-            else 
-                h2 no product
-    </main>
+    main 
+        form.forms(action="/admin/product" method='POST') 
+            input.input_product(type="text" name="title")
+            button.button(type="submit") add product
