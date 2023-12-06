@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> <%= pageTitle %></title>
     <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/products.css">
 </head>
 <body>
     <header class="main_header">
@@ -17,6 +18,11 @@
             </ul>
         </nav>
     </header>
-    <h1> not found</h1>
+    <main>
+        <form action="/admin/product" method="POST" class="forms">
+            <input type="text" class="input_product" name="title" placeholder="input name"/>
+            <button type="submit" class="button">add product</button>
+        </form>
+    </main>
 </body>
 </html>
