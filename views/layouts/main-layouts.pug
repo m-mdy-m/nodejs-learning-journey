@@ -14,6 +14,7 @@ html(lang="en")
                 li.main_header-item
                     a.active(href="/") Shop
                 li.main_header-item
-                    a(href="/admin/add-product") add Product
+                
+                    a(href="/admin/add-product", class=(path === '/admin/add-product' ? 'active': '')) add Product
 
     block content 
