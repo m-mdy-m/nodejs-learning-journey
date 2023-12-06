@@ -1,5 +1,6 @@
 // Import required core modules
 const path = require("path");
+const routeDir = require("./util/path.js")
 const express = require("express");
 
 // Import middleware for parsing request bodies
@@ -24,7 +25,7 @@ app.use(ShopRouter);
 // Handle 404 errors - if none of the routes match, this middleware creates a 404 response
 app.use((req, res, next) => {
   // Send a 404 error page using 'sendFile' method
-  res.status(404).sendFile(path.join(__dirname,"views","404.html"));
+  res.status(404).sendFile(path.join(routeDir,"views","404.html"));
 });
 
 // Start the Express server on port 3000
