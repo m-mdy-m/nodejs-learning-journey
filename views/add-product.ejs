@@ -1,28 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> <%= pageTitle %></title>
-    <link rel="stylesheet" href="/css/main.css">
+<%- include('includes/header.ejs') %>
     <link rel="stylesheet" href="/css/products.css">
 </head>
 <body>
-    <header class="main_header">
-        <nav class="main_header-nav">
-            <ul class="main_header-list">
-                <li class="main_header-item"><a href="/">shop</a></li>
-                <li class="main_header-item">
-                    <a href="/admin/add-product">add-product</a>
-                </li>
-            </ul>
-        </nav>
-    </header>
+    <%- include('includes/navigation.ejs')%>
     <main>
         <form action="/admin/product" method="POST" class="forms">
             <input type="text" class="input_product" name="title" placeholder="input name"/>
             <button type="submit" class="button">add product</button>
         </form>
     </main>
-</body>
-</html>
+<%- include("includes/end.ejs") %>
