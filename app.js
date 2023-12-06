@@ -1,29 +1,33 @@
-// Require the necessary modules
+// Import required core modules
+const path = require("path");
 const express = require("express");
+
+// Import middleware for parsing request bodies
 const bodyParser = require("body-parser");
 
-// Importing router modules for different sections of the site
+// Create an Express application instance
+const app = express();
+
+// Import routes from separate files
 const AdminRouter = require("./routes/admin.js");
 const ShopRouter = require("./routes/shop.js");
 
-// Create an Express application
-const app = express();
+// Apply the bodyParser middleware to parse form data from incoming requests
+app.use(bodyParser.urlencoded({ extended: false }));
 
-// Use body-parser middleware to parse form data
-app.use(bodyParser.urlencoded({extended: false}));
-
-// Mount the admin routes on the '/admin' path
+// Mount the admin router on '/admin' path for any admin related navigation
 app.use("/admin", AdminRouter);
 
-// Mount the shop routes on the root path
+// Mount the shop router for the root path to handle shop-related routes
 app.use(ShopRouter);
 
-// Middleware for handling 404 errors (page not found)
+// Handle 404 errors - if none of the routes match, this middleware creates a 404 response
 app.use((req, res, next) => {
-  res.status(404).send("<h1 style='color:red;'>Page Not Found 404</h1>")
+  // Send a 404 error page using 'sendFile' method
+  res.status(404).sendFile(path.join(__dirname,"views","404.html"));
 });
 
-// Start the server and listen on port 3000
+// Start the Express server on port 3000
 app.listen(3000, () => {
-  console.log("Server running on port 3000");
+  console.log("Server running on port 3000"); // Log the server status to the console
 });
