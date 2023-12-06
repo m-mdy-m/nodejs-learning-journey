@@ -15,7 +15,7 @@ const ShopRouter = require("./routes/shop.js");
 
 // Apply the bodyParser middleware to parse form data from incoming requests
 app.use(bodyParser.urlencoded({ extended: false }));
-
+app.use(express.static(path.join(routeDir,'public')))
 // Mount the admin router on '/admin' path for any admin related navigation
 app.use("/admin", AdminRouter);
 
