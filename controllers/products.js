@@ -1,4 +1,4 @@
-const Product = require('../models/product.js')
+const Product = require("../models/product.js");
 
 exports.getAddProduct = (req, res, next) => {
 	res.render("add-product", {
@@ -14,13 +14,14 @@ exports.postAddProduct = (req, res, next) => {
 	res.redirect("/");
 };
 exports.getProducts = (req, res, next) => {
-	const product = Product.fetchAll()
-	res.render("shop", {
-		prods: product,
-		pageTitle: "shop",
-		path: req.path,
-		hasProducts: product.length > 0,
-		activeShop: true,
-		productsCSS: true,
+	Product.fetchAll(product => {
+		res.render("shop", {
+			prods: product,
+			pageTitle: "shop",
+			path: req.path,
+			hasProducts: product.length > 0,
+			activeShop: true,
+			productsCSS: true,
+		});
 	});
 };
