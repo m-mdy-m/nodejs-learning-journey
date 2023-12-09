@@ -3,7 +3,7 @@ const product = [];
 exports.getAddProduct = (req, res, next) => {
 	res.render("add-product", {
 		pageTitle: "add products",
-		path: "/admin/add-product",
+		path: req.path,
 		productsCSS: true,
 		activeAddProduct: true,
 	});
@@ -11,14 +11,14 @@ exports.getAddProduct = (req, res, next) => {
 exports.postAddProduct = (req, res, next) => {
 	product.push({ title: req.body.title });
 	res.redirect("/");
-}
+};
 exports.getProducts = (req, res, next) => {
 	res.render("shop", {
 		prods: product,
 		pageTitle: "shop",
-		path: "/",
+		path: req.path,
 		hasProducts: product.length > 0,
-		activeShop:true,
-		productsCSS:true,
+		activeShop: true,
+		productsCSS: true,
 	});
-}
+};
