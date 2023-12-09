@@ -4,14 +4,7 @@ const routeDir = require("../util/path.js");
 const express = require("express");
 const router = express.Router();
 const product = [];
-router.get("/add-product", (req, res, next) => {
-	res.render("add-product", {
-		pageTitle: "add products",
-		path: "/admin/add-product",
-		productsCSS: true,
-		activeAddProduct: true,
-	});
-});
+router.get("/add-product", );
 
 router.post("/product", (req, res, next) => {
 	product.push({ title: req.body.title });
