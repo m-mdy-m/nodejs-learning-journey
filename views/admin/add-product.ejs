@@ -1,12 +1,12 @@
-<%- include('includes/header.ejs') %>
+<%- include('../includes/header.ejs') %>
     <link rel="stylesheet" href="/css/products.css">
 </head>
 <body>
-    <%- include('includes/navigation.ejs')%>
+    <%- include('../includes/navigation.ejs')%>
     <main>
         <form action="/admin/product" method="POST" class="forms">
             <input type="text" class="input_product" name="title" placeholder="input name"/>
             <button type="submit" class="button">add product</button>
         </form>
     </main>
-<%- include("includes/end.ejs") %>
+<%- include("../includes/end.ejs") %>
