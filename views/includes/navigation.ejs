@@ -5,7 +5,16 @@
                 <a class="<%= path=== '/' ? 'active' : ''%>" href="/">shop</a>
             </li>
             <li class="main_header-item">
+                <a class="<%= path=== '/products' ? 'active' : ''%>" href="/products">Products</a>
+            </li>
+            <li class="main_header-item">
+                <a class="<%= path=== '/card' ? 'active' : ''%>" href="/card">Card</a>
+            </li>
+            <li class="main_header-item">
                 <a class="<%= path==='/admin/add-product' ? 'active' : '' %>" href="/admin/add-product">add-product</a>
+            </li>
+            <li class="main_header-item">
+                <a class="<%= path==='/admin/products' ? 'active' : '' %>" href="/admin/products">Admin Products</a>
             </li>
         </ul>
     </nav>
