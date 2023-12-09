@@ -8,12 +8,12 @@ const app = express();
 
 app.set("view engine", "ejs");
 app.set("views", "views");
-const AdminRouter = require("./routes/admin.js");
+const adminRoutes = require("./routes/admin.js");
 const ShopRouter = require("./routes/shop.js");
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(routeDir, "public")));
-app.use("/admin", AdminRouter.router);
+app.use("/admin", adminRoutes);
 
 app.use(ShopRouter);
 
