@@ -12,6 +12,12 @@
 						<img src="<%= product.imgUrl %>" alt="<%= product.title %>">
 					    <h3 class="product__price"><%= product.price %></h3>
 						<p><%= product.description %></p>
+						<div>
+							<form action="/add-to-cart" method="POST">
+
+								<button class="button">Add to Cart</button>
+							</form>
+						</div>
 				    </article>
 				<%}%>
 			</div>
