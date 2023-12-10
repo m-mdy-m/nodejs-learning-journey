@@ -5,7 +5,22 @@
     <%- include('../includes/navigation.ejs')%>
     <main>
         <form action="/admin/product" method="POST" class="forms">
-            <input type="text" class="input_product" name="title" placeholder="input name"/>
+            <div>
+                <label for="title">title</label>
+                <input type="text" class="input_product" name="title" placeholder="input name"/>
+            </div>
+            <div>
+                <label for="imgUrl">Img URL</label>
+                <input type="text" class="input_product" name="imgUrl" placeholder="input name"/>
+            </div>
+            <div>
+                <label for="price">price</label>
+                <input type="number" class="input_product" name="price" placeholder="input name"/>
+            </div>
+            <div>
+                <label for="description">description</label>
+                <textarea name="description" id="description"  rows="5"></textarea>
+            </div>
             <button type="submit" class="button">add product</button>
         </form>
     </main>

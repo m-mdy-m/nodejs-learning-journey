@@ -9,17 +9,21 @@ exports.getAddProduct = (req, res, next) => {
 	});
 };
 exports.postAddProduct = (req, res, next) => {
-	const product = new Product(req.body.title);
+	const title = req.body.title;
+	const img = req.body.imgUrl;
+	const price = req.body.price;
+	const description = req.body.description;
+	const product = new Product(title,img,price,description);
 	product.save();
 	res.redirect("/");
 };
 
-exports.getProducts = (req,res,next)=>{
-    Product.fetchAll(product => {
+exports.getProducts = (req, res, next) => {
+	Product.fetchAll(product => {
 		res.render("admin/products", {
 			prods: product,
 			pageTitle: "Admin Products",
 			path: req.path,
 		});
 	});
-}
+};
