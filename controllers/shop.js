@@ -21,7 +21,7 @@ exports.getProduct = (req, res, next) => {
 			});
 		}
 		else{
-			console.log('rorradsdas');
+			console.log("err");
 		}
 	});
 };
@@ -42,6 +42,15 @@ exports.getCart = (req, res, next) => {
 		path: req.path,
 	});
 };
+
+exports.postCart = (req,res,next)=>{
+	const prodId = req.body.productId;
+	console.log(prodId);
+	res.redirect('/cart')
+}
+
+
+
 exports.getOrders = (req, res, next) => {
 	res.render("shop/orders", {
 		pageTitle: "Your Orders",
