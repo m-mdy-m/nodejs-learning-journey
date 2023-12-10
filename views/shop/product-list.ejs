@@ -9,7 +9,9 @@
 				<% for (let product of prods) {%>
 				    <article>
 					    <h1 class="products__title"><%= product.title %></h1>
-					    <h3 class="product__price">$2042</h3>
+						<img src="<%= product.imgUrl %>" alt="<%= product.title %>">
+					    <h3 class="product__price"><%= product.price %></h3>
+						<p><%= product.description %></p>
 				    </article>
 				<%}%>
 			</div>
