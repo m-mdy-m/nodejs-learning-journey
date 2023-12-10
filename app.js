@@ -1,6 +1,5 @@
 // Import required core modules
 const path = require("path");
-const routeDir = require("./util/path.js");
 const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
@@ -11,7 +10,7 @@ const adminRoutes = require("./routes/admin.js");
 const ShopRouter = require("./routes/shop.js");
 
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(express.static(path.join(routeDir, "public")));
+app.use(express.static(path.join(__dirname, "public")));
 app.use("/admin", adminRoutes);
 
 app.use(ShopRouter);
