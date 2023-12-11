@@ -21,23 +21,24 @@ module.exports = class Product {
 		this.imageUrl = imageUrl;
 		this.description = description;
 		this.price = price;
-	  }
+	}
 	save() {
-		this.id = Math.random().toString()
+		this.id = Math.random().toString();
 		getProductFormFile(pro => {
 			pro.push(this);
 			fs.writeFile(pth, JSON.stringify(pro), err => {
-				console.log(err);
+
+				console.log('ERROR FILE WRITE => ' ,err);
 			});
 		});
 	}
 	static fetchAll(cb) {
 		getProductFormFile(cb);
 	}
-	static findById(id,cb){
-		getProductFormFile(products=>{
-			const product = products.find(p =>p.id === id)
-			cb(product)
-		})
+	static findById(id, cb) {
+		getProductFormFile(products => {
+			const product = products.find(p => p.id === id);
+			cb(product);
+		});
 	}
 };
