@@ -1,6 +1,7 @@
 // const Products = [ ];
 const fs = require("fs");
 const path = require("path");
+const Cart = require('./cart.js')
 const pth = path.join(
 	path.dirname(process.mainModule.filename),
 	"data",
@@ -41,6 +42,19 @@ module.exports = class Product {
 					console.log("ERROR FILE WRITE => ", err);
 				});
 			}
+		});
+	}
+
+	static delete(id){
+		getProductFormFile(products => {
+			const product = products.find(prod => prod.id === id)
+			const updatedProducts = products.filter(prod => prod.id !== id)
+			fs.writeFile(pth,JSON.stringify(updatedProducts),err =>{
+				if (!err) {
+					Cart.deleteProduct(id,product.price)
+				}
+			})
+
 		});
 	}
 	static fetchAll(cb) {
