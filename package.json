@@ -17,6 +17,7 @@
     "express-handlebars": "^7.1.2",
     "mysql2": "^3.6.5",
     "nodemon": "^3.0.2",
-    "pug": "^3.0.2"
+    "pug": "^3.0.2",
+    "sequelize": "^6.35.2"
   }
 }
