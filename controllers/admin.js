@@ -18,11 +18,10 @@ exports.postAddProduct = (req, res, next) => {
 		price,
 		description,
 		imageUrl,
-		userId : req.user.id
 	})
 		.then(result => {
 			console.log("created Product");
-			res.redirect('/')
+			res.redirect("/");
 		})
 		.catch(err => {
 			console.log(err);
@@ -35,7 +34,9 @@ exports.getEditProduct = (req, res, next) => {
 		return res.redirect("/");
 	}
 	const prodId = req.params.productId;
-	Product.findByPk(prodId)
+	req.user
+		.getProducts({ where: { id: prodId } })
+		// Product.findByPk(prodId)
 		.then(product => {
 			if (!product) {
 				return res.redirect("/");
@@ -56,17 +57,21 @@ exports.postEditProduct = (req, res, next) => {
 	const updatedPrice = req.body.price;
 	const updatedImageUrl = req.body.imageUrl;
 	const updatedDesc = req.body.description;
-	Product.findByPk(prodId).then(products =>{
-		products.title = updatedTitle
-		products.price = updatedPrice
-		products.imageUrl = updatedImageUrl
-		products.description = updatedDesc
-		return products.save()
-	}).then(result =>{
-		console.log('update products');
-		res.redirect("/admin/products");
-	})
-	.catch(err=>{console.log(err);})
+	Product.findByPk(prodId)
+		.then(products => {
+			products.title = updatedTitle;
+			products.price = updatedPrice;
+			products.imageUrl = updatedImageUrl;
+			products.description = updatedDesc;
+			return products.save();
+		})
+		.then(result => {
+			console.log("update products");
+			res.redirect("/admin/products");
+		})
+		.catch(err => {
+			console.log(err);
+		});
 };
 
 exports.getProducts = (req, res, next) => {
@@ -85,12 +90,16 @@ exports.getProducts = (req, res, next) => {
 
 exports.postDeleteProduct = (req, res, next) => {
 	const prodId = req.body.productId;
-	Product.findByPk(prodId).then(products=>{
-		return products.destroy()
-	}).then(result => {
-		console.log('delete users');
-		res.redirect("/admin/products");
-	})
-	.catch(err => {console.log(err);})
+	Product.findByPk(prodId)
+		.then(products => {
+			return products.destroy();
+		})
+		.then(result => {
+			console.log("delete users");
+			res.redirect("/admin/products");
+		})
+		.catch(err => {
+			console.log(err);
+		});
 	res.redirect("/admin/products");
 };
