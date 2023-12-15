@@ -18,7 +18,7 @@ const ShopRouter = require("./routes/shop.js");
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 app.use((req, res, next) => {
-	User.findByPk(9)
+	User.findByPk(1)
 		.then(user => {
 			if (!user) {
 				return res.status(404).send("User not found");
@@ -49,7 +49,7 @@ sequelize
 	.sync()
 	// .sync({force : true}) // یعنی تغییراتی که انجام دادم اعمال شه
 	.then(result => {
-		return User.findByPk(9);
+		return User.findByPk(1);
 		// console.log(result);
 	})
 	.then(user => {
@@ -59,7 +59,9 @@ sequelize
 		return Promise.resolve(user);
 	})
 	.then(user => {
-		// console.log("user =>", user);
+		return user.createCart();
+	})
+	.then(cart => {
 		app.listen(3000, () => {
 			console.log("Server running on port 3000");
 		});
