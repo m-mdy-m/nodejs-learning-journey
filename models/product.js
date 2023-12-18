@@ -1,4 +1,4 @@
-const mongoConnect = require("../util/database")
+const getDb = require("../util/database").getDb
 
 // const Sequelize  = require("sequelize")
 

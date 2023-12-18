@@ -34,8 +34,8 @@ app.use(controllers404.Error404);
 
 const start = async ()=>{
 	try{
-		const connect = await mongoConnect()
-		console.log('connect data base =>', connect);
+		await mongoConnect.connect()
+		console.log('connect data base')
 		app.listen(3000,()=>{
 			console.log('run server on port 3000');
 		})
