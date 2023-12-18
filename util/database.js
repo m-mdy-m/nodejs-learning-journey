@@ -11,9 +11,17 @@
 // Sequelize
 // =======================
 
-const Sequelize = require("sequelize");
-const sequelize = new Sequelize("node-complete", "root", "mdy_mmshly13831922", {
-	dialect: "mysql",
-    host: "localhost"
-});
-module.exports = sequelize
+// const Sequelize = require("sequelize");
+// const sequelize = new Sequelize("node-complete", "root", "mdy_mmshly13831922", {
+// 	dialect: "mysql",
+//     host: "localhost"
+// });
+// module.exports = sequelize
+
+
+
+
+// No SQl
+const mongodb = require("mongodb")
+
+const MongoClient = mongodb.MongoClient
