@@ -25,3 +25,17 @@
 const mongodb = require("mongodb")
 
 const MongoClient = mongodb.MongoClient
+const url = 'mongodb://localhost:27017'
+
+const connect = async ()=>{
+    try{
+        const client = await MongoClient.connect(url, { useUnifiedTopology: true });
+
+        console.log('connect dataBase');
+        return client;
+    }catch(e){
+        console.log('err connect database =>',e );
+    }
+}
+connect()
+module.exports = connect
