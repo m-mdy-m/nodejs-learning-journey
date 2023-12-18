@@ -20,15 +20,26 @@
 
 
 
+// module.exports = connect
 
 // No SQl
 const mongodb = require("mongodb")
 
 const MongoClient = mongodb.MongoClient
 const url = 'mongodb://localhost:27017'
-
+let db;
 const connect = async ()=>{
     const client = await MongoClient.connect(url, { useUnifiedTopology: true })
+    db = client.db()
     return client
 }
-module.exports = connect
+
+
+const getDb = ()=>{
+    if (db) {
+        return db
+    }
+    throw 'no database found'
+}
+exports.connect  = connect
+exports.getDb = getDb
