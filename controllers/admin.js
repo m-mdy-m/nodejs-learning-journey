@@ -17,6 +17,7 @@ exports.postAddProduct = async (req, res, next) => {
 		const product = new Product(title, price, description, imageUrl);
 		await product.save();
 		console.log("create user");
+			res.redirect("/");
 	} catch (err) {
 		console.log("Cannot create product =>", err);
 		res.status(500).send(err); // Send an error response
