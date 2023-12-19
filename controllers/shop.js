@@ -1,6 +1,6 @@
 const Product = require("../models/product");
 exports.getProducts = (req, res, next) => {
-	Product.findAll()
+	Product.fetchAll()
 		.then(products => {
 			res.render("shop/product-list", {
 				prods: products,
@@ -11,6 +11,17 @@ exports.getProducts = (req, res, next) => {
 		.catch(err => {
 			console.log(err);
 		});
+	// Product.findAll()
+	// 	.then(products => {
+	// 		res.render("shop/product-list", {
+	// 			prods: products,
+	// 			pageTitle: "All Products",
+	// 			path: "/products",
+	// 		});
+	// 	})
+	// 	.catch(err => {
+	// 		console.log(err);
+	// 	});
 };
 
 exports.getProduct = (req, res, next) => {

@@ -1,4 +1,5 @@
 const getDb = require("../util/database").getDb;
+const db = getDb();
 
 // const Sequelize  = require("sequelize")
 
@@ -34,20 +35,28 @@ class Product {
 		this.imageUrl = imageUrl;
 	}
 	save() {
-		const db = getDb();
 		const inserting = async () => {
 			try {
-				const collection = await db.collection("products");
-				const resulting = await collection.insertOne(this);
 				console.log("inserting");
-				console.log('resulting =>',resulting);
-				return resulting
+				return await db.collection("products").insertOne(this);
 			} catch (e) {
 				console.log("Error inserting product", e);
-			throw e;
+				throw e;
 			}
 		};
-		inserting()
+		return inserting();
+	}
+	static fetchAll(){
+		const fetch = async ()=>{
+			try{
+				const products = await db.collection('products').find().toArray()
+				console.log('products =>', products);
+				return products
+			}catch(e){
+				console.log(e);
+			}
+		}
+		return fetch()
 	}
 }
 module.exports = Product;

@@ -9,18 +9,19 @@ exports.getAddProduct = (req, res, next) => {
 };
 
 exports.postAddProduct = async (req, res, next) => {
-	try{
+	try {
 		const title = req.body.title;
 		const imageUrl = req.body.imageUrl;
 		const price = req.body.price;
 		const description = req.body.description;
-		const product = await new Product(title,price,description,imageUrl)
-		const savePro = await product.save()
-		console.log('create user =>', savePro);
-	}catch(err){
-		console.log('can not create user =>,', err);
+		const product = new Product(title, price, description, imageUrl);
+		const savePro = await product.save();
+		console.log("create user =>", savePro);
+	} catch (err) {
+		console.log("Cannot create product =>", err);
+		res.status(500).send(err); // Send an error response
 	}
-	
+
 	// Product.create({
 	// 	title,
 	// 	price,

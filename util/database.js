@@ -24,7 +24,7 @@
 const mongodb = require("mongodb");
 
 const MongoClient = mongodb.MongoClient;
-const url = "mongodb://localhost:27017";
+const url = "mongodb://localhost:27017/shop";
 let db;
 const connect = async () => {
 	const client = await MongoClient.connect(url, { useUnifiedTopology: true });
