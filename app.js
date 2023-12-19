@@ -4,10 +4,10 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
 const controllers404 = require("./controllers/error.js");
-const mongoConnect = require("./util/database")
+const mongoConnect = require("./util/database").connect
 app.set("view engine", "ejs");
 app.set("views", "views");
-// const adminRoutes = require("./routes/admin.js");
+const adminRoutes = require("./routes/admin.js");
 // const ShopRouter = require("./routes/shop.js");
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -26,7 +26,7 @@ app.use(express.static(path.join(__dirname, "public")));
 // 			res.status(500).send("An error occurred");
 // 		});
 // });
-// app.use("/admin", adminRoutes);
+app.use("/admin", adminRoutes);
 
 // app.use(ShopRouter);
 
@@ -34,7 +34,7 @@ app.use(controllers404.Error404);
 
 const start = async ()=>{
 	try{
-		await mongoConnect.connect()
+		await mongoConnect()
 		console.log('connect data base')
 		app.listen(3000,()=>{
 			console.log('run server on port 3000');
