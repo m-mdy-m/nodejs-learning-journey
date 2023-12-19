@@ -1,4 +1,5 @@
 const Product = require("../models/product");
+const mongodb = require('mongodb')
 exports.getAddProduct = (req, res, next) => {
 	res.render("admin/edit-product", {
 		pageTitle: "Add Product",
@@ -82,15 +83,10 @@ exports.postEditProduct = async (req, res, next) => {
 	const updatedDesc = req.body.description;
 	console.log("id =>", prodId);
 	try {
-		const products = await Product.findById(prodId);
-		console.log(products);
-		products.title = updatedTitle;
-		products.price = updatedPrice;
-		products.imageUrl = updatedImageUrl;
-		products.description = updatedDesc;
-		const update =  products.save()
-		console.log(update);
-		console.log('update users');
+		const newProducts = new Product(updatedTitle,updatedPrice,updatedDesc,updatedImageUrl, prodId)
+		const update =  await newProducts.save()
+		console.log('update user ', update);
+		res.redirect('/')
 	} catch (err) {
 		console.log(err);
 	}
