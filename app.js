@@ -8,7 +8,7 @@ const mongoConnect = require("./util/database").connect
 app.set("view engine", "ejs");
 app.set("views", "views");
 const adminRoutes = require("./routes/admin.js");
-// const ShopRouter = require("./routes/shop.js");
+const ShopRouter = require("./routes/shop.js");
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
@@ -28,7 +28,7 @@ app.use(express.static(path.join(__dirname, "public")));
 // });
 app.use("/admin", adminRoutes);
 
-// app.use(ShopRouter);
+app.use(ShopRouter);
 
 app.use(controllers404.Error404);
 
