@@ -1,5 +1,5 @@
 const Product = require("../models/product");
-const mongodb = require('mongodb')
+const mongodb = require("mongodb");
 exports.getAddProduct = (req, res, next) => {
 	res.render("admin/edit-product", {
 		pageTitle: "Add Product",
@@ -83,10 +83,16 @@ exports.postEditProduct = async (req, res, next) => {
 	const updatedDesc = req.body.description;
 	console.log("id =>", prodId);
 	try {
-		const newProducts = new Product(updatedTitle,updatedPrice,updatedDesc,updatedImageUrl, prodId)
-		const update =  await newProducts.save()
-		console.log('update user ', update);
-		res.redirect('/')
+		const newProducts = new Product(
+			updatedTitle,
+			updatedPrice,
+			updatedDesc,
+			updatedImageUrl,
+			prodId
+		);
+		const update = await newProducts.save();
+		console.log("update user ", update);
+		res.redirect("/");
 	} catch (err) {
 		console.log(err);
 	}
@@ -136,7 +142,10 @@ exports.getProducts = async (req, res, next) => {
 
 exports.postDeleteProduct = async (req, res, next) => {
 	const prodId = req.body.productId;
-	const products = Product.findById(prodId)
+	await Product.deleteById(prodId);
+	console.log("DESTROYED PRODUCT ");
+	res.redirect("/admin/products");
+
 	// Product.findByPk(prodId)
 	// 	.then(products => {
 	// 		return products.destroy();
