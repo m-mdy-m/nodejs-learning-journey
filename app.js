@@ -4,7 +4,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
 const controllers404 = require("./controllers/error.js");
-const mongoConnect = require("./util/database").connect
+const mongoConnect = require("./util/database").connect;
 app.set("view engine", "ejs");
 app.set("views", "views");
 const adminRoutes = require("./routes/admin.js");
@@ -32,15 +32,15 @@ app.use(ShopRouter);
 
 app.use(controllers404.Error404);
 
-const start = async ()=>{
-	try{
-		await mongoConnect()
-		console.log('connect data base')
-		app.listen(3000,()=>{
-			console.log('run server on port 3000');
-		})
-	}catch(err){
-		console.error('Failed to connect to the database:', err);
+const start = async () => {
+	try {
+		await mongoConnect();
+		console.log("connect data base");
+		app.listen(3000, () => {
+			console.log("run server on port 3000");
+		});
+	} catch (err) {
+		console.error("Failed to connect to the database:", err);
 	}
-}
-start()
+};
+start();

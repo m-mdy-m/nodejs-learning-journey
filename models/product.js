@@ -1,4 +1,4 @@
-const mongodb = require('mongodb')
+const mongodb = require("mongodb");
 const getDb = require("../util/database").getDb;
 
 // const Sequelize  = require("sequelize")
@@ -47,6 +47,8 @@ class Product {
 		};
 		return inserting();
 	}
+	
+
 	static fetchAll() {
 		const db = getDb();
 		try {
@@ -56,8 +58,16 @@ class Product {
 			throw e;
 		}
 	}
+	static isValidId(id){
+		return /^[0-9a-zA-Z]{24}$/.test(id)
+	}
+
 	static findById(prodId) {
+		console.log("prodId =>", prodId);
 		const db = getDb();
+		if (!this.isValidId(prodId)) {
+			return console.log('invalid');
+		}
 		try {
 			return db.collection("products").findOne({ _id: new mongodb.ObjectId(prodId) });
 		} catch (e) {

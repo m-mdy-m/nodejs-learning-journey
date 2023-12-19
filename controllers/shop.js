@@ -25,10 +25,12 @@ exports.getProducts = async (req, res, next) => {
 
 exports.getProduct = async (req, res, next) => {
 	const prodId = req.params.productId;
-
 	try {
 		const product = await Product.findById(prodId);
-		console.log("product =>", product);
+		if (!Product.isValidId(prodId)) {
+			res.status(400).send("Invalid product ID format.");
+			return;
+		}
 		res.render("shop/product-detail", {
 			product: product,
 			pageTitle: product.title,
@@ -67,12 +69,13 @@ exports.getProduct = async (req, res, next) => {
 };
 
 exports.getIndex = async (req, res, next) => {
-	const products = await Product.fetchAll();
 	try {
-		res.render("shop/index", {
-			prods: products,
-			pageTitle: "Shop",
-			path: "/",
+		await Product.fetchAll().then(products => {
+			res.render("shop/index", {
+				prods: products,
+				pageTitle: "Shop",
+				path: "/",
+			});
 		});
 	} catch (e) {
 		console.log("err =>", e);
