@@ -134,18 +134,19 @@ exports.getProducts = async (req, res, next) => {
 	// 	});
 };
 
-// exports.postDeleteProduct = (req, res, next) => {
-// 	const prodId = req.body.productId;
-// 	Product.findByPk(prodId)
-// 		.then(products => {
-// 			return products.destroy();
-// 		})
-// 		.then(result => {
-// 			console.log("delete users");
-// 			res.redirect("/admin/products");
-// 		})
-// 		.catch(err => {
-// 			console.log(err);
-// 		});
-// 	res.redirect("/admin/products");
-// };
+exports.postDeleteProduct = async (req, res, next) => {
+	const prodId = req.body.productId;
+	const products = Product.findById(prodId)
+	// Product.findByPk(prodId)
+	// 	.then(products => {
+	// 		return products.destroy();
+	// 	})
+	// 	.then(result => {
+	// 		console.log("delete users");
+	// 		res.redirect("/admin/products");
+	// 	})
+	// 	.catch(err => {
+	// 		console.log(err);
+	// 	});
+	// res.redirect("/admin/products");
+};
