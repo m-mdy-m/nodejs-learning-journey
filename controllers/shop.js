@@ -25,22 +25,32 @@ exports.getProducts = async (req, res, next) => {
 
 exports.getProduct = async (req, res, next) => {
 	const prodId = req.params.productId;
-	console.log('prod id =>', prodId);
-	
+
+	try {
+		const product = await Product.findById(prodId);
+		console.log("product =>", product);
+		res.render("shop/product-detail", {
+			product: product,
+			pageTitle: product.title,
+			path: "/products",
+		});
+	} catch (e) {
+		console.log("e =>", e);
+	}
 	// Product.findById(prodId)
-//==================================
+	//==================================
 	// Product.findAll({ WHERE: { id: prodId } })
 	// 	.then(product => {
 	// 		if (product) {
-				// res.render("shop/product-detail", {
-				// 	product: product[0],
-				// 	pageTitle: product[0].title,
-				// 	path: "/products",
-				// });
+	// res.render("shop/product-detail", {
+	// 	product: product[0],
+	// 	pageTitle: product[0].title,
+	// 	path: "/products",
+	// });
 	// 		}
 	// 	})
 	// 	.catch();
-// ===================================================
+	// ===================================================
 	// Product.findByPk(prodId)
 	// 	.then(product => {
 	// 		if (product) {

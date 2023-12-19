@@ -1,3 +1,4 @@
+const mongodb = require('mongodb')
 const getDb = require("../util/database").getDb;
 
 // const Sequelize  = require("sequelize")
@@ -57,11 +58,8 @@ class Product {
 	}
 	static findById(prodId) {
 		const db = getDb();
-
 		try {
-			const find = db.collection("products").find({ id: prodId }).next();
-			console.log('find =>', find);
-			return find;
+			return db.collection("products").findOne({ _id: new mongodb.ObjectId(prodId) });
 		} catch (e) {
 			console.log(e);
 			throw e;
