@@ -28,24 +28,37 @@ const getDb = require("../util/database").getDb;
 // })
 
 class Product {
-	constructor(title, price, description, imageUrl) {
+	constructor(title, price, description, imageUrl,id) {
 		this.title = title;
 		this.price = price;
 		this.description = description;
 		this.imageUrl = imageUrl;
+		this._id = id
 	}
 	save() {
 		const db = getDb();
+		let dbOp ;
+		if (this._id) {
+			dbOp = db.collection('products').updateOne(
+				{
+					_id : new mongodb.ObjectId(this._id)
+				},
+				{$set : this}
+				)
+		}else{
+			dbOp = db.collection('products').insertOne(this)
+		}
 		const inserting = async () => {
 			try {
 				console.log("inserting");
-				return await db.collection("products").insertOne(this);
+				return await dbOp.collection("products").insertOne(this);
 			} catch (e) {
 				console.log("Error inserting product", e);
 				throw e;
 			}
 		};
 		return inserting();
+		
 	}
 	
 

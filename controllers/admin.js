@@ -14,8 +14,8 @@ exports.postAddProduct = async (req, res, next) => {
 		const price = req.body.price;
 		const description = req.body.description;
 		const product = new Product(title, price, description, imageUrl);
-		const savePro = await product.save();
-		console.log("create user =>", savePro);
+		await product.save();
+		console.log("create user");
 	} catch (err) {
 		console.log("Cannot create product =>", err);
 		res.status(500).send(err); // Send an error response
@@ -44,17 +44,15 @@ exports.getEditProduct = async (req, res, next) => {
 	const prodId = req.params.productId;
 	try {
 		const products = await Product.findById(prodId);
-		console.log("products =>",products);
-		console.log("products[0] =>",products[0]);
 		if (!products) {
-			res.redirect('/')
+			res.redirect("/");
 		}
 		res.render("admin/edit-product", {
-						pageTitle: "Edit Product",
-						path: "/admin/edit-product",
-						editing: editMode,
-						product: products,
-					});
+			pageTitle: "Edit Product",
+			path: "/admin/edit-product",
+			editing: editMode,
+			product: products,
+		});
 	} catch (err) {
 		console.log(err);
 	}
@@ -82,6 +80,20 @@ exports.postEditProduct = async (req, res, next) => {
 	const updatedPrice = req.body.price;
 	const updatedImageUrl = req.body.imageUrl;
 	const updatedDesc = req.body.description;
+	console.log("id =>", prodId);
+	try {
+		const products = await Product.findById(prodId);
+		console.log(products);
+		products.title = updatedTitle;
+		products.price = updatedPrice;
+		products.imageUrl = updatedImageUrl;
+		products.description = updatedDesc;
+		const update =  products.save()
+		console.log(update);
+		console.log('update users');
+	} catch (err) {
+		console.log(err);
+	}
 	// Product.findByPk(prodId)
 	// 	.then(products => {
 	// 		products.title = updatedTitle;
