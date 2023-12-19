@@ -47,20 +47,25 @@ class Product {
 		return inserting();
 	}
 	static fetchAll() {
-		const fetch = async () => {
-			const db = getDb();
-			try {
-				const products = await db
-					.collection("products")
-					.find()
-					.toArray();
-				console.log("products =>", products);
-				return products;
-			} catch (e) {
-				console.log(e);
-			}
-		};
-		return fetch();
+		const db = getDb();
+		try {
+			return db.collection("products").find().toArray();
+		} catch (e) {
+			console.log(e);
+			throw e;
+		}
+	}
+	static findById(prodId) {
+		const db = getDb();
+
+		try {
+			const find = db.collection("products").find({ id: prodId }).next();
+			console.log('find =>', find);
+			return find;
+		} catch (e) {
+			console.log(e);
+			throw e;
+		}
 	}
 }
 module.exports = Product;

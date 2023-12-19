@@ -1,16 +1,15 @@
 const Product = require("../models/product");
-exports.getProducts = (req, res, next) => {
-	Product.fetchAll()
-		.then(products => {
-			res.render("shop/product-list", {
-				prods: products,
-				pageTitle: "All Products",
-				path: "/products",
-			});
-		})
-		.catch(err => {
-			console.log(err);
+exports.getProducts = async (req, res, next) => {
+	const products = Product.fetchAll();
+	try {
+		res.render("shop/product-list", {
+			prods: products,
+			pageTitle: "All Products",
+			path: "/products",
 		});
+	} catch (err) {
+		console.log(err);
+	}
 	// Product.findAll()
 	// 	.then(products => {
 	// 		res.render("shop/product-list", {
@@ -24,19 +23,24 @@ exports.getProducts = (req, res, next) => {
 	// 	});
 };
 
-exports.getProduct = (req, res, next) => {
+exports.getProduct = async (req, res, next) => {
 	const prodId = req.params.productId;
-	Product.findAll({ WHERE: { id: prodId } })
-		.then(product => {
-			if (product) {
-				res.render("shop/product-detail", {
-					product: product[0],
-					pageTitle: product[0].title,
-					path: "/products",
-				});
-			}
-		})
-		.catch();
+	console.log('prod id =>', prodId);
+	
+	// Product.findById(prodId)
+//==================================
+	// Product.findAll({ WHERE: { id: prodId } })
+	// 	.then(product => {
+	// 		if (product) {
+				// res.render("shop/product-detail", {
+				// 	product: product[0],
+				// 	pageTitle: product[0].title,
+				// 	path: "/products",
+				// });
+	// 		}
+	// 	})
+	// 	.catch();
+// ===================================================
 	// Product.findByPk(prodId)
 	// 	.then(product => {
 	// 		if (product) {
@@ -52,18 +56,17 @@ exports.getProduct = (req, res, next) => {
 	// 	});
 };
 
-exports.getIndex = (req, res, next) => {
-	Product.fetchAll()
-		.then(products => {
-			res.render("shop/index", {
-				prods: products,
-				pageTitle: "Shop",
-				path: "/",
-			});
-		})
-		.catch(err => {
-			console.log(err);
+exports.getIndex = async (req, res, next) => {
+	const products = await Product.fetchAll();
+	try {
+		res.render("shop/index", {
+			prods: products,
+			pageTitle: "Shop",
+			path: "/",
 		});
+	} catch (e) {
+		console.log("err =>", e);
+	}
 };
 
 exports.getCart = (req, res, next) => {
