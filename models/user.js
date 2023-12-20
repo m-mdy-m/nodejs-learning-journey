@@ -17,14 +17,27 @@ const getDb = require("../util/database").getDb;
 
 // module.exports = User
 class User {
-	constructor(username, email) {
+	constructor(username, email, cart, id) {
 		this.name = username;
 		this.email = email;
+		this.cart = cart;
+		this._id = id;
 	}
 	async save() {
 		const db = getDb();
 		return await db.collection("users").insertOne(this);
 	}
+
+	async addToCart(product) {
+		// const cartProduct = this.cart.items.findIndex(cp=>{
+		// 	return cp._id === product._id
+		// })
+		const objectId = mongodb.ObjectId;
+		const updateCart = { items: [{ ...product, quantity: 1 }] };
+		const db = getDb();
+		return await db.collection("users").updateOne({ _id: new objectId(this._id) },{$set : {cart : updateCart}});
+	}
+
 	static async findById(userId) {
 		const db = getDb();
 		const objectId = mongodb.ObjectId;
@@ -33,4 +46,4 @@ class User {
 			.findOne({ _id: new objectId(userId) });
 	}
 }
-module.exports = User
+module.exports = User;
