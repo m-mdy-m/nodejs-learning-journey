@@ -5,6 +5,9 @@ const bodyParser = require("body-parser");
 const app = express();
 const controllers404 = require("./controllers/error.js");
 const mongoConnect = require("./util/database").connect;
+
+const User = require("./models/user.js");
+
 app.set("view engine", "ejs");
 app.set("views", "views");
 const adminRoutes = require("./routes/admin.js");
@@ -12,20 +15,18 @@ const ShopRouter = require("./routes/shop.js");
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
-// app.use((req, res, next) => {
-// 	User.findByPk(1)
-// 		.then(user => {
-// 			if (!user) {
-// 				return res.status(404).send("User not found");
-// 			}
-// 			req.user = user;
-// 			next();
-// 		})
-// 		.catch(err => {
-// 			console.log(err);
-// 			res.status(500).send("An error occurred");
-// 		});
-// });
+app.use(async (req, res, next) => {
+	try {
+		const user = await User.findById(1);
+		if (!user) {
+			return;
+		}
+		req.user = user;
+		return next();
+	} catch (err) {
+		console.log(err);
+	}
+});
 app.use("/admin", adminRoutes);
 
 app.use(ShopRouter);
