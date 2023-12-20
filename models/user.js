@@ -29,13 +29,23 @@ class User {
 	}
 
 	async addToCart(product) {
+		console.log('product =>', product);
 		// const cartProduct = this.cart.items.findIndex(cp=>{
 		// 	return cp._id === product._id
 		// })
 		const objectId = mongodb.ObjectId;
-		const updateCart = { items: [{ ...product, quantity: 1 }] };
+		const updateCart = {
+			items: [
+				{ prodId : new objectId(product._id), quantity: 1 },
+			],
+		};
 		const db = getDb();
-		return await db.collection("users").updateOne({ _id: new objectId(this._id) },{$set : {cart : updateCart}});
+		return await db
+			.collection("users")
+			.updateOne(
+				{ _id: new objectId(this._id) },
+				{ $set: { cart: updateCart } }
+			);
 	}
 
 	static async findById(userId) {
