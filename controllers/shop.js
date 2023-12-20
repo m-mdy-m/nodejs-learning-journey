@@ -82,27 +82,31 @@ exports.getIndex = async (req, res, next) => {
 	}
 };
 
-exports.getCart = (req, res, next) => {
-	req.user
-		.getCart()
-		.then(carts => {
-			console.log("carts =>", carts);
-			return carts
-				.getProducts()
-				.then(products => {
-					res.render("shop/cart", {
-						path: "/cart",
-						pageTitle: "Your Cart",
-						products: products,
-					});
-				})
-				.catch(err => {
-					console.log(err);
-				});
-		})
-		.catch(err => {
-			console.log(err);
-		});
+exports.getCart = async (req, res, next) => {
+	const carts = await req.user.getCart()
+
+	// ===============
+	// req.user
+	// 	.getCart()
+	// 	.then(carts => {
+	// 		console.log("carts =>", carts);
+	// 		return carts
+	// 			.getProducts()
+	// 			.then(products => {
+	// 				res.render("shop/cart", {
+	// 					path: "/cart",
+	// 					pageTitle: "Your Cart",
+	// 					products: products,
+	// 				});
+	// 			})
+	// 			.catch(err => {
+	// 				console.log(err);
+	// 			});
+	// 	})
+	// 	.catch(err => {
+	// 		console.log(err);
+	// 	});
+	// ===============
 	// Cart.getCart(cart => {
 	// 	Product.fetchAll(products => {
 	// 		const cartProducts = [];

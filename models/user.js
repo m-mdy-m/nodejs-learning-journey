@@ -66,5 +66,18 @@ class User {
 			.collection("users")
 			.findOne({ _id: new objectId(userId) });
 	}
+
+	async getCart(){
+		const db = getDb()
+		const prodId = this.cart.items.map(i =>{
+			return i.productId
+		})
+		const products = await db.collection('products').find({_id : {$in : prodId}}).toArray()
+		return products.map(p=>{
+			return {...p,quantity:this.cart.items.find(i =>{
+				return i.productId.toString() === p._id.toString();
+			})}
+		})
+	}
 }
 module.exports = User;
