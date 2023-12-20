@@ -17,9 +17,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(async (req, res, next) => {
 	try {
-		const user = await User.findById(1);
+		const user = await User.findById('6582af67207864914b6fd6ab');
 		if (!user) {
-			return;
+			return res.redirect('/')
 		}
 		req.user = user;
 		return next();
