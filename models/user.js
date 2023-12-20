@@ -23,7 +23,13 @@ class User {
 	}
 	async save() {
 		const db = getDb();
-		
+		return await db.collection("users").insertOne(this);
 	}
-	static findById(userId) {}
+	static async findById(userId) {
+		const db = getDb();
+		const objectId = mongodb.ObjectId;
+		return await db
+			.collection("users")
+			.findOne({ _id: new objectId(userId) });
+	}
 }
