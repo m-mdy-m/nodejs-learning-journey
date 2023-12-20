@@ -123,24 +123,17 @@ exports.getCart = (req, res, next) => {
 };
 
 exports.postCart = async (req, res, next) => {
-	const prodId = await req.body.productId;
-	const product = await Product.findById(prodId)
-	const addCart = await req.user.addToCart(product)
-	console.log('add cart =>', addCart);
-	return addCart
-
-
-
-
-
-
+	const prodId = req.body.productId;
+	const product = await Product.findById(prodId);
+	const addCart = await req.user.addToCart(product);
+	console.log("add cart =>", addCart);
+	return addCart;
 
 	// ============================
 	// let fetchedCart;
 	// let newQuantity = 1;
 
-
-// =======================
+	// =======================
 	// Product.findById(prodId, product => {
 	// 	Cart.addProduct(prodId, product.price);
 	// });
