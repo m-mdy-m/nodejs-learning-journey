@@ -84,17 +84,11 @@ exports.getIndex = async (req, res, next) => {
 
 exports.getCart = async (req, res, next) => {
 	const products = await req.user.getCart();
-	console.log(products);
-	// products.forEach(p => {
-	// 	console.log(p.title);
-	// 	console.log(p.id);
-	// 	console.log(p._id);
-	// });
-	// res.render("shop/cart", {
-	// 	path: "/cart",
-	// 	pageTitle: "Your Cart",
-	// 	products: products,
-	// });
+	res.render("shop/cart", {
+		path: "/cart",
+		pageTitle: "Your Cart",
+		products: products,
+	});
 	// ===============
 	// req.user
 	// 	.getCart()

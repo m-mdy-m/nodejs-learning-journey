@@ -67,17 +67,18 @@ class User {
 			.findOne({ _id: new objectId(userId) });
 	}
 
-	async getCart(){
-		const db = getDb()
-		const prodId = this.cart.items.map(i =>{
-			return i.productId
-		})
-		const products = await db.collection('products').find({_id : {$in : prodId}}).toArray()
-		return products.map(p=>{
-			return {...p,quantity:this.cart.items.find(i =>{
-				return i.productId.toString() === p._id.toString();
-			})}.quantity
-		})
+	async getCart() {
+		const db = getDb();
+		const prodIds = this.cart.items.map(i => {
+			return i.productId;
+		});
+		
+		const products = await db.collection('products').find({_id: {$in: prodIds}}).toArray();
+		
+		return products.map(p => {
+			const quantity = this.cart.items.find(i => i.productId.toString() === p._id.toString()).quantity;
+			return {...p, quantity: quantity}; 
+		});
 	}
 
 	async deleteItemFromCart(prodId){
