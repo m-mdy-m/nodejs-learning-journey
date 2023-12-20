@@ -22,7 +22,7 @@ app.use(async (req, res, next) => {
 			return res.redirect('/')
 		}
 		req.user = user;
-		return next();
+		next();
 	} catch (err) {
 		console.log(err);
 	}
