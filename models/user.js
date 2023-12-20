@@ -29,10 +29,8 @@ class User {
 	}
 
 	async addToCart(product) {
-		console.log("product =>", product);
 		const objectId = mongodb.ObjectId;
 		const cartProductIndex = this.cart.items.findIndex(cp => {
-			console.log("cp =>", cp);
 			return cp.productId.toString() === product._id.toString();
 		});
 		let newQuantity = 1;
