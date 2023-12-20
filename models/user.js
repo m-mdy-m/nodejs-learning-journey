@@ -30,13 +30,22 @@ class User {
 
 	async addToCart(product) {
 		console.log('product =>', product);
-		// const cartProduct = this.cart.items.findIndex(cp=>{
-		// 	return cp._id === product._id
-		// })
 		const objectId = mongodb.ObjectId;
+		const cartProductIndex = this.cart.items.findIndex(cp=>{
+			console.log('cp =>', cp);
+			return cp.productId === product._id
+		})
+		let newQuantity = 1
+		const updateCartItems = [...this.cart.items ]
+		if (cartProductIndex >=0) {
+			newQuantity = this.cart.items[cartProductIndex].quantity +1
+			updateCartItems[cartProductIndex].quantity = newQuantity
+		}else{
+			
+		}
 		const updateCart = {
 			items: [
-				{ prodId : new objectId(product._id), quantity: 1 },
+				{ productId : new objectId(product._id), quantity: newQuantity },
 			],
 		};
 		const db = getDb();
