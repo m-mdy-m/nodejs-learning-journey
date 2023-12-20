@@ -181,18 +181,22 @@ exports.postCart = async (req, res, next) => {
 	// 	});
 };
 
-exports.postCartDeleteProduct = (req, res, next) => {
+exports.postCartDeleteProduct = async (req, res, next) => {
 	const prodId = req.body.productId;
-	req.user
-		.deleteItemFromCart(prodId)
-		.then(result => {
-			console.log(result);
-			console.log("user delete");
-			res.redirect("/cart");
-		})
-		.catch(err => {
-			console.log(err);
-		});
+	const deleteUser = req.user.deleteItemFromCart(prodId)
+	console.log(deleteUser);
+	console.log('user delete');
+	return res.redirect("/cart");
+	// req.user
+	// 	.deleteItemFromCart(prodId)
+	// 	.then(result => {
+	// 		console.log(result);
+	// 		console.log("user delete");
+	// 		res.redirect("/cart");
+	// 	})
+	// 	.catch(err => {
+	// 		console.log(err);
+	// 	});
 };
 exports.postOrder = (req, res, next) => {
 	let fetchedCart;
