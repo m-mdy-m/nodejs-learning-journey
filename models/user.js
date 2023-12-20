@@ -33,7 +33,7 @@ class User {
 		const objectId = mongodb.ObjectId;
 		const cartProductIndex = this.cart.items.findIndex(cp => {
 			console.log("cp =>", cp);
-			return cp.productId === product._id;
+			return cp.productId.toString() === product._id.toString();
 		});
 		let newQuantity = 1;
 		const updateCartItems = [...this.cart.items];
