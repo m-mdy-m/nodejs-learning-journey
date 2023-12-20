@@ -79,5 +79,9 @@ class User {
 			})}.quantity
 		})
 	}
+
+	deleteItemFromCart(){
+		
+	}
 }
 module.exports = User;
