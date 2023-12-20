@@ -21,7 +21,8 @@ app.use(async (req, res, next) => {
 		if (!user) {
 			return res.redirect('/')
 		}
-		req.user = user;
+		// req.user = user;
+		req.user = new User(user.name,user.email,user.cart,user._id);
 		next();
 	} catch (err) {
 		console.log(err);
