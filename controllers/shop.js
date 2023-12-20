@@ -83,8 +83,12 @@ exports.getIndex = async (req, res, next) => {
 };
 
 exports.getCart = async (req, res, next) => {
-	const carts = await req.user.getCart()
-
+	const products = await req.user.getCart();
+	res.render("shop/cart", {
+		path: "/cart",
+		pageTitle: "Your Cart",
+		products: products,
+	});
 	// ===============
 	// req.user
 	// 	.getCart()
@@ -128,23 +132,16 @@ exports.getCart = async (req, res, next) => {
 
 exports.postCart = async (req, res, next) => {
 	const prodId = await req.body.productId;
-	const product = await Product.findById(prodId)
-	const addCart = await req.user.addToCart(product)
-	console.log('add cart =>', addCart);
-	return addCart
-
-
-
-
-
-
+	const product = await Product.findById(prodId);
+	const addCart = await req.user.addToCart(product);
+	console.log("add cart =>", addCart);
+	return addCart;
 
 	// ============================
 	// let fetchedCart;
 	// let newQuantity = 1;
 
-
-// =======================
+	// =======================
 	// Product.findById(prodId, product => {
 	// 	Cart.addProduct(prodId, product.price);
 	// });
