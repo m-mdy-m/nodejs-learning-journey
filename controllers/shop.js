@@ -84,11 +84,17 @@ exports.getIndex = async (req, res, next) => {
 
 exports.getCart = async (req, res, next) => {
 	const products = await req.user.getCart();
-	res.render("shop/cart", {
-		path: "/cart",
-		pageTitle: "Your Cart",
-		products: products,
-	});
+	console.log(products);
+	// products.forEach(p => {
+	// 	console.log(p.title);
+	// 	console.log(p.id);
+	// 	console.log(p._id);
+	// });
+	// res.render("shop/cart", {
+	// 	path: "/cart",
+	// 	pageTitle: "Your Cart",
+	// 	products: products,
+	// });
 	// ===============
 	// req.user
 	// 	.getCart()
@@ -131,11 +137,11 @@ exports.getCart = async (req, res, next) => {
 };
 
 exports.postCart = async (req, res, next) => {
-	const prodId = await req.body.productId;
+	const prodId = req.body.productId;
 	const product = await Product.findById(prodId);
 	const addCart = await req.user.addToCart(product);
 	console.log("add cart =>", addCart);
-	addCart
+	addCart;
 	return res.redirect("/cart");
 
 	// ============================
@@ -182,10 +188,11 @@ exports.postCart = async (req, res, next) => {
 };
 
 exports.postCartDeleteProduct = async (req, res, next) => {
-	const prodId = req.body.productId;
-	const deleteUser = req.user.deleteItemFromCart(prodId)
+	const prodId = await req.body.productId;
+	console.log("id =>", req.body);
+	const deleteUser = await req.user.deleteItemFromCart(prodId);
 	console.log(deleteUser);
-	console.log('user delete');
+	console.log("user delete");
 	return res.redirect("/cart");
 	// req.user
 	// 	.deleteItemFromCart(prodId)
