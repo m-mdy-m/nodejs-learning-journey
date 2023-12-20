@@ -33,3 +33,4 @@ class User {
 			.findOne({ _id: new objectId(userId) });
 	}
 }
+module.exports = User
