@@ -72,27 +72,48 @@ class User {
 		const prodIds = this.cart.items.map(i => {
 			return i.productId;
 		});
-		
-		const products = await db.collection('products').find({_id: {$in: prodIds}}).toArray();
-		
+
+		const products = await db
+			.collection("products")
+			.find({ _id: { $in: prodIds } })
+			.toArray();
+
 		return products.map(p => {
-			const quantity = this.cart.items.find(i => i.productId.toString() === p._id.toString()).quantity;
-			return {...p, quantity: quantity}; 
+			const quantity = this.cart.items.find(
+				i => i.productId.toString() === p._id.toString()
+			).quantity;
+			return { ...p, quantity: quantity };
 		});
 	}
 
-	async deleteItemFromCart(prodId){
-		const updateCartItems = this.cart.items.filter(item =>{
+	async deleteItemFromCart(prodId) {
+		const updateCartItems = this.cart.items.filter(item => {
 			return item.productId.toString() !== prodId.toString();
-		})
+		});
 		const db = getDb();
 		const objectId = mongodb.ObjectId;
 		return await db
 			.collection("users")
 			.updateOne(
 				{ _id: new objectId(this._id) },
-				{ $set: { cart: {items : updateCartItems} } }
+				{ $set: { cart: { items: updateCartItems } } }
 			);
+	}
+	async addOrder() {
+		const db = getDb();
+		const objectId = mongodb.ObjectId;
+		try {
+			await db.collection("orders").insertOne(this.cart);
+			this.cart = await { items: [] };
+			await db
+				.collection("users")
+				.updateOne(
+					{ _id: new objectId(this._id) },
+					{ $set: { cart: { items: [] } } }
+				);
+		} catch (err) {
+			console.log(err);
+		}
 	}
 }
 module.exports = User;
