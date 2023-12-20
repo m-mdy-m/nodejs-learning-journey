@@ -82,9 +82,10 @@ class User {
 
 	async deleteItemFromCart(prodId){
 		const updateCartItems = this.cart.items.filter(item =>{
-			return item.productId.toString() !== productId.toString();
+			return item.productId.toString() !== prodId.toString();
 		})
 		const db = getDb();
+		const objectId = mongodb.ObjectId;
 		return await db
 			.collection("users")
 			.updateOne(
