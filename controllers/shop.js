@@ -243,6 +243,7 @@ exports.postOrder = async (req, res, next) => {
 };
 exports.getOrders = async (req, res, next) => {
 	const orders = await req.user.getOrders()
+	console.log('orders =>', orders);
 	res.render("shop/orders", {
 					path: "/orders",
 					pageTitle: "Your Orders",
