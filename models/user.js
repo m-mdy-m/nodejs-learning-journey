@@ -123,10 +123,10 @@ class User {
 			console.log(err);
 		}
 	}
-	getOrders(){
+	async getOrders(){
 		const db = getDb()
 		const objectId = mongodb.ObjectId;
-		return db.collection('orders').find({'user._id ': new objectId(this._id)}).toArray()
+		return await db.collection('orders').find({"user._id" :new objectId(this._id)}).toArray()
 	}
 }
 module.exports = User;
