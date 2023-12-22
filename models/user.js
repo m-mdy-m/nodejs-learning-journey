@@ -102,6 +102,14 @@ class User {
 	async addOrder() {
 		const db = getDb();
 		const objectId = mongodb.ObjectId;
+		const products = await this.getCart()
+		const order = {
+			items : products,
+			user : {
+				_id : new objectId(this._id),
+				name : this.name,
+			}
+		}
 		try {
 			await db.collection("orders").insertOne(this.cart);
 			this.cart = await { items: [] };
@@ -114,6 +122,10 @@ class User {
 		} catch (err) {
 			console.log(err);
 		}
+	}
+	async getOrders(){
+		const db = getDb()
+		
 	}
 }
 module.exports = User;
