@@ -103,7 +103,7 @@ class User {
 		const db = getDb();
 		const objectId = mongodb.ObjectId;
 		const products = await this.getCart()
-		const order = {
+		const order = await {
 			items : products,
 			user : {
 				_id : new objectId(this._id),
@@ -111,7 +111,7 @@ class User {
 			}
 		}
 		try {
-			await db.collection("orders").insertOne(this.cart);
+			await db.collection("orders").insertOne(order);
 			this.cart = await { items: [] };
 			await db
 				.collection("users")
@@ -123,9 +123,10 @@ class User {
 			console.log(err);
 		}
 	}
-	async getOrders(){
+	getOrders(){
 		const db = getDb()
-		
+		const objectId = mongodb.ObjectId;
+		return db.collection('orders').find({'user._id ': new objectId(this._id)}).toArray()
 	}
 }
 module.exports = User;
