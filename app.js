@@ -19,7 +19,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(async (req, res, next) => {
 	try {
-		const user = await User.findById("65873a00135ee73e54c7496e");
+		const user = await User.findById("65873ba802bcb4165b0167a6");
 		if (!user) {
 			return res.redirect("/");
 		}
@@ -54,14 +54,17 @@ const start = async () => {
 			"mongodb://localhost:27017/shop"
 		);
 		console.log("connect database");
-		const user = new User({
-			name : "mahdi",
-			email : "mahdi@gmail.com",
-			cart : {
-				items: []
-			}
-		})
-		user.save()
+		const user = await User.findOne();
+		if (!user) {
+			const user = new User({
+				name: "mahdi",
+				email: "mahdi@gmail.com",
+				cart: {
+					items: [],
+				},
+			});
+			user.save();
+		}
 		app.listen(3000, () => {
 			console.log("run server on port 3000");
 		});
@@ -69,4 +72,4 @@ const start = async () => {
 		console.log(error);
 	}
 };
-start()
+start();
