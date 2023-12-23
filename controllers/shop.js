@@ -77,7 +77,7 @@ exports.postOrder = async (req, res, next) => {
 	const user = await req.user.populate("cart.items.productId"); // Directly awaiting populate()
 
 	const products = user.cart.items.map(i => {
-		return { quantity: i.quantity, product: i.productId };
+		return { quantity: i.quantity, product: {...i.productId._doc} };
 	});
 	const order = new Order({
 		user: {
