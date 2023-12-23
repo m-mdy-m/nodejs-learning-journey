@@ -8,7 +8,7 @@ const controllers404 = require("./controllers/error.js");
 
 const mongoose = require("mongoose");
 
-// const User = require("./models/user.js");
+const User = require("./models/user.js");
 
 app.set("view engine", "ejs");
 app.set("views", "views");
@@ -17,19 +17,19 @@ const ShopRouter = require("./routes/shop.js");
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
-// app.use(async (req, res, next) => {
-// 	try {
-// 		const user = await User.findById("6582f089207864914b6fd6b9");
-// 		if (!user) {
-// 			return res.redirect("/");
-// 		}
-// 		// req.user = user;
-// 		req.user = new User(user.name, user.email, user.cart, user._id);
-// 		next();
-// 	} catch (err) {
-// 		console.log(err);
-// 	}
-// });
+app.use(async (req, res, next) => {
+	try {
+		const user = await User.findById("65873a00135ee73e54c7496e");
+		if (!user) {
+			return res.redirect("/");
+		}
+		// req.user = user;
+		req.user = user;
+		next();
+	} catch (err) {
+		console.log(err);
+	}
+});
 app.use("/admin", adminRoutes);
 
 app.use(ShopRouter);
@@ -54,6 +54,14 @@ const start = async () => {
 			"mongodb://localhost:27017/shop"
 		);
 		console.log("connect database");
+		const user = new User({
+			name : "mahdi",
+			email : "mahdi@gmail.com",
+			cart : {
+				items: []
+			}
+		})
+		user.save()
 		app.listen(3000, () => {
 			console.log("run server on port 3000");
 		});
