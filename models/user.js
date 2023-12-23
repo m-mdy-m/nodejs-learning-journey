@@ -22,7 +22,7 @@ const userSchema = new Schema({
 		],
 	},
 });
-userSchema.methods.addToCart = async product => {
+userSchema.methods.addToCart = async function(product){
 	if (!this.cart) {
 		this.cart = { items: [] };
 	}
