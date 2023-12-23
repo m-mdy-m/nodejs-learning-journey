@@ -16,10 +16,6 @@ exports.getProduct = async (req, res, next) => {
 	const prodId = req.params.productId;
 	try {
 		const product = await Product.findById(prodId);
-		if (!Product.isValidId(prodId)) {
-			res.status(400).send("Invalid product ID format.");
-			return;
-		}
 		res.render("shop/product-detail", {
 			product: product,
 			pageTitle: product.title,
