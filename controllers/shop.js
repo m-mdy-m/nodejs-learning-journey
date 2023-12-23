@@ -91,8 +91,7 @@ exports.postOrder = async (req, res, next) => {
 	return res.redirect("/orders");
 };
 exports.getOrders = async (req, res, next) => {
-	const orders = await req.user.getOrders();
-	console.log("orders =>", orders);
+	const orders = await Order.find({'user.userId': req.user._id})
 	res.render("shop/orders", {
 		path: "/orders",
 		pageTitle: "Your Orders",
