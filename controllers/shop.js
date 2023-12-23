@@ -74,6 +74,16 @@ exports.postCartDeleteProduct = async (req, res, next) => {
 	return res.redirect("/cart");
 };
 exports.postOrder = async (req, res, next) => {
+	const user = await req.user.populate("cart.items.productId"); // Directly awaiting populate()
+
+	const products = user.cart.items;
+	const order = new Order({
+		user: {
+			name: req.user.name,
+			userId: req.user,
+		},
+		products : {}
+	});
 	await req.user.addOrder();
 	res.redirect("/orders");
 };
