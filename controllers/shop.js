@@ -40,15 +40,20 @@ exports.getIndex = async (req, res, next) => {
 };
 
 exports.getCart = async (req, res, next) => {
-	const user = await req.user.populate('cart.items.productId').execPopulate()
-	const products = user.cart.items
-	res.render("shop/cart", {
-		path: "/cart",
-		pageTitle: "Your Cart",
-		products,
-	});
-};
+	try {
+		const user = await req.user.populate("cart.items.productId"); // Directly awaiting populate()
 
+		const products = user.cart.items;
+		res.render("shop/cart", {
+			path: "/cart",
+			pageTitle: "Your Cart",
+			products,
+		});
+	} catch (error) {
+		console.log(error);
+		next(error); // Handle the error
+	}
+};
 exports.postCart = async (req, res, next) => {
 	const prodId = req.body.productId;
 	const product = await Product.findById(prodId);
