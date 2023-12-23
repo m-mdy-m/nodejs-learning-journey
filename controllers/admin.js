@@ -20,6 +20,7 @@ exports.postAddProduct = async (req, res, next) => {
 			price,
 			description,
 			imageUrl,
+			userId :  req.user // ** req.user._id    را انتخاب کنیم مونگوس ایدی ان را انتخاب میکند req.user فرقی ندارد حتی اگر 
 		});
 		await product.save();
 		console.log("create user");
