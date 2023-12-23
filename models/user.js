@@ -22,7 +22,15 @@ const userSchema = new Schema({
 		],
 	},
 });
-userSchema.methods.removeFromCart = async function (productId) {
+
+userSchema.methods.clearCart = function(){
+    this.cart = { items : []}
+    return this.save()
+}
+
+
+
+userSchema.methods.removeFromCart =function (productId) {
 	const updateCartItems = this.cart.items.filter(item => {
 		return item.productId.toString() !== productId.toString();
 	});
