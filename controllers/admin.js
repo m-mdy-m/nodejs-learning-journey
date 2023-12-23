@@ -60,16 +60,13 @@ exports.postEditProduct = async (req, res, next) => {
 	const updatedDesc = req.body.description;
 	console.log("id =>", prodId);
 	try {
-		const newProducts = new Product(
-			updatedTitle,
-			updatedPrice,
-			updatedDesc,
-			updatedImageUrl,
-			prodId
-		);
-		const update = await newProducts.save();
-		console.log("update user ", update);
-		res.redirect("/");
+		const product = await Product.findById(prodId)
+		product.title = updatedTitle
+		product.price = updatedPrice
+		product.description = updatedDesc
+		product.imageUrl = updatedImageUrl
+		product.save()
+		return res.redirect("/");
 	} catch (err) {
 		console.log(err);
 	}
