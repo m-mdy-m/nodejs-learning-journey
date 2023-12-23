@@ -20,11 +20,11 @@ exports.postAddProduct = async (req, res, next) => {
 			price,
 			description,
 			imageUrl,
-			userId :  req.user // ** req.user._id    را انتخاب کنیم مونگوس ایدی ان را انتخاب میکند req.user فرقی ندارد حتی اگر 
+			userId: req.user, // ** req.user._id    را انتخاب کنیم مونگوس ایدی ان را انتخاب میکند req.user فرقی ندارد حتی اگر
 		});
 		await product.save();
 		console.log("create user");
-			res.redirect("/");
+		res.redirect("/");
 	} catch (err) {
 		console.log("Cannot create product =>", err);
 		res.status(500).send(err); // Send an error response
@@ -61,12 +61,12 @@ exports.postEditProduct = async (req, res, next) => {
 	const updatedDesc = req.body.description;
 	console.log("id =>", prodId);
 	try {
-		const product = await Product.findById(prodId)
-		product.title = updatedTitle
-		product.price = updatedPrice
-		product.description = updatedDesc
-		product.imageUrl = updatedImageUrl
-		product.save()
+		const product = await Product.findById(prodId);
+		product.title = updatedTitle;
+		product.price = updatedPrice;
+		product.description = updatedDesc;
+		product.imageUrl = updatedImageUrl;
+		product.save();
 		return res.redirect("/");
 	} catch (err) {
 		console.log(err);
@@ -75,7 +75,9 @@ exports.postEditProduct = async (req, res, next) => {
 
 exports.getProducts = async (req, res, next) => {
 	try {
-		const products = await Product.find();
+		const products = await Product.find()
+			// .select("title price -_id")
+			// .populate("userId", "name");
 		res.render("admin/products", {
 			prods: products,
 			pageTitle: "Admin Products",

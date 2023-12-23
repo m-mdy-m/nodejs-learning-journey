@@ -12,13 +12,41 @@ const userSchema = new Schema({
 	cart: {
 		items: [
 			{
-				productId: { type: Schema.Types.ObjectId, ref : "Product", required: true },
+				productId: {
+					type: Schema.Types.ObjectId,
+					ref: "Product",
+					required: true,
+				},
 				quantity: { type: Number, required: true },
 			},
 		],
 	},
 });
-module.exports = mongoose.model("User", userSchema)
+userSchema.methods.addToCart = async product => {
+	if (!this.cart) {
+		this.cart = { items: [] };
+	}
+	const cartProductIndex = this.cart.items.findIndex(cp => {
+		return cp.productId.toString() === product._id.toString();
+	});
+	let newQuantity = 1;
+	const updateCartItems = [...this.cart.items];
+	if (cartProductIndex >= 0) {
+		newQuantity = this.cart.items[cartProductIndex].quantity + 1;
+		updateCartItems[cartProductIndex].quantity = newQuantity;
+	} else {
+		updateCartItems.push({
+			productId: product._id,
+			quantity: newQuantity,
+		});
+	}
+	const updateCart = {
+		items: updateCartItems,
+	};
+    this.cart = updateCart
+	return await this.save()
+};
+module.exports = mongoose.model("User", userSchema);
 // const mongodb = require("mongodb");
 // const getDb = require("../util/database").getDb;
 // const Sequelize = require("sequelize");
