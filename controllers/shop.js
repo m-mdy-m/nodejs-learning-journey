@@ -72,7 +72,6 @@ exports.postCartDeleteProduct = async (req, res, next) => {
 	return res.redirect("/cart");
 };
 exports.postOrder = async (req, res, next) => {
-	let fetchedCart;
 	await req.user.addOrder();
 	res.redirect("/orders");
 };
