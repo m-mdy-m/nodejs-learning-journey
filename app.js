@@ -4,13 +4,19 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
 const controllers404 = require("./controllers/error.js");
+const session = require("express-session");
 // const mongoConnect = require("./util/database").connect;
 
-
-const MongoDBStore = require('connect-mongodb-session')
+const MongoDBStore = require("connect-mongodb-session")(session);
 const mongoose = require("mongoose");
-const session = require("express-session");
 const User = require("./models/user.js");
+
+const MONGODB_URL = "mongodb://localhost:27017/shop";
+
+const store = new MongoDBStore({
+	url: 'mongodb://localhost:27017/shop',
+	collection: "sessions",
+});
 
 app.set("view engine", "ejs");
 app.set("views", "views");
@@ -25,6 +31,7 @@ app.use(
 		secret: "my secret",
 		resave: false,
 		saveUninitialized: false,
+		store: store,
 	})
 );
 
@@ -61,9 +68,7 @@ app.use(controllers404.Error404);
 // start();
 const start = async () => {
 	try {
-		const connect = await mongoose.connect(
-			"mongodb://localhost:27017/shop"
-		);
+		const connect = await mongoose.connect('mongodb://localhost:27017/shop');
 		console.log("connect database");
 		const user = await User.findOne();
 		if (!user) {
