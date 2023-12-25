@@ -7,6 +7,11 @@ exports.getLogin = (req, res, next) => {
 			isLoggedIn = value;
 		}
 	});
+	res.render("auth/login", {
+		path: "/login",
+		pageTitle: "Login",
+		isAuthenticated: isLoggedIn,
+	});
 };
 exports.postLogin = (req, res, next) => {
 	// req.igLoggedIn = true
