@@ -10,6 +10,6 @@ exports.postLogin = (req, res, next) => {
 	// req.igLoggedIn = true
 	 // ** درواقع ما وقتی اینکار میکنیم با درتسور ریدایرکت این اطعلاعات به پایان مرسه و میمیره و دروافع انگار هیچ چیزی نیست که در اینجا کوکی هابه کمک ما می ایند
 	 // ست کردن کوکی ها =>
-	 res.setHeader("Ser-Cookie", 'loggedIn=true')
+	 res.setHeader("Set-Cookie", 'loggedIn=true')
 	res.redirect('/')
 };
