@@ -48,8 +48,15 @@ app.use(async (req, res, next) => {
 		console.log(err);
 	}
 });
-app.use((req,res,nxt)=>{
-		
+app.use( async (req,res,nxt)=>{
+	if(req.session.user){
+		const user = await User.findById(req.session.user._id);
+		req.user = user
+		nxt()
+	}else{
+		 return nxt()
+	}
+	// const user = await User.findById("65873ba802bcb4165b0167a6");
 })
 
 app.use("/admin", adminRoutes);
