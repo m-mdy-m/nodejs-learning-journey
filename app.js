@@ -48,6 +48,10 @@ app.use(async (req, res, next) => {
 		console.log(err);
 	}
 });
+app.use((req,res,nxt)=>{
+		
+})
+
 app.use("/admin", adminRoutes);
 
 app.use(ShopRouter);
