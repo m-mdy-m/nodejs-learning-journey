@@ -6,6 +6,8 @@ const app = express();
 const controllers404 = require("./controllers/error.js");
 // const mongoConnect = require("./util/database").connect;
 
+
+const MongoDBStore = require('connect-mongodb-session')
 const mongoose = require("mongoose");
 const session = require("express-session");
 const User = require("./models/user.js");
