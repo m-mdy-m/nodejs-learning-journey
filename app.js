@@ -34,7 +34,6 @@ app.use(async (req, res, next) => {
 app.use("/admin", adminRoutes);
 
 app.use(ShopRouter);
-
 app.use(authRoute);
 app.use(controllers404.Error404);
 
