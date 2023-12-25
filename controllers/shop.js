@@ -37,8 +37,8 @@ exports.getIndex = async (req, res, next) => {
 			prods: products,
 			pageTitle: "Shop",
 			path: "/",
-			isAuthenticated: req.igLoggedIn,
-		});
+		isAuthenticated: req.igLoggedIn,
+	});
 	} catch (e) {
 		console.log("err =>", e);
 	}
