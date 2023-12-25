@@ -7,7 +7,7 @@ const controllers404 = require("./controllers/error.js");
 // const mongoConnect = require("./util/database").connect;
 
 const mongoose = require("mongoose");
-
+const session = require("express-session");
 const User = require("./models/user.js");
 
 app.set("view engine", "ejs");
@@ -18,6 +18,14 @@ const authRoute = require("./routes/auth.js");
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
+app.use(
+	session({
+		secret: "my secret",
+		resave: false,
+		saveUninitialized: false,
+	})
+);
+
 app.use(async (req, res, next) => {
 	try {
 		const user = await User.findById("65873ba802bcb4165b0167a6");
