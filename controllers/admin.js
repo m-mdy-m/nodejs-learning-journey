@@ -5,6 +5,7 @@ exports.getAddProduct = (req, res, next) => {
 		pageTitle: "Add Product",
 		path: "/admin/add-product",
 		editing: false,
+		isAuthenticated: req.igLoggedIn,
 	});
 };
 
@@ -47,6 +48,7 @@ exports.getEditProduct = async (req, res, next) => {
 			path: "/admin/edit-product",
 			editing: editMode,
 			product: products,
+			isAuthenticated: req.igLoggedIn,
 		});
 	} catch (err) {
 		console.log(err);
@@ -75,13 +77,14 @@ exports.postEditProduct = async (req, res, next) => {
 
 exports.getProducts = async (req, res, next) => {
 	try {
-		const products = await Product.find()
-			// .select("title price -_id")
-			// .populate("userId", "name");
+		const products = await Product.find();
+		// .select("title price -_id")
+		// .populate("userId", "name");
 		res.render("admin/products", {
 			prods: products,
 			pageTitle: "Admin Products",
 			path: "/admin/products",
+			isAuthenticated: req.igLoggedIn,
 		});
 	} catch (e) {
 		console.log("e =>", e);

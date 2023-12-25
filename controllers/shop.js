@@ -8,6 +8,7 @@ exports.getProducts = async (req, res, next) => {
 			prods: products,
 			pageTitle: "All Products",
 			path: "/products",
+			isAuthenticated: req.igLoggedIn,
 		});
 	} catch (err) {
 		console.log(err);
@@ -22,6 +23,7 @@ exports.getProduct = async (req, res, next) => {
 			product: product,
 			pageTitle: product.title,
 			path: "/products",
+			isAuthenticated: req.igLoggedIn,
 		});
 	} catch (e) {
 		console.log("e =>", e);
@@ -35,6 +37,7 @@ exports.getIndex = async (req, res, next) => {
 			prods: products,
 			pageTitle: "Shop",
 			path: "/",
+			isAuthenticated: req.igLoggedIn,
 		});
 	} catch (e) {
 		console.log("err =>", e);
@@ -50,6 +53,7 @@ exports.getCart = async (req, res, next) => {
 			path: "/cart",
 			pageTitle: "Your Cart",
 			products,
+			isAuthenticated: req.igLoggedIn,
 		});
 	} catch (error) {
 		console.log(error);
@@ -77,7 +81,7 @@ exports.postOrder = async (req, res, next) => {
 	const user = await req.user.populate("cart.items.productId"); // Directly awaiting populate()
 
 	const products = user.cart.items.map(i => {
-		return { quantity: i.quantity, product: {...i.productId._doc} };
+		return { quantity: i.quantity, product: { ...i.productId._doc } };
 	});
 	const order = new Order({
 		user: {
@@ -86,16 +90,17 @@ exports.postOrder = async (req, res, next) => {
 		},
 		products,
 	});
-	order.save()
-	req.user.clearCart()
+	order.save();
+	req.user.clearCart();
 	return res.redirect("/orders");
 };
 exports.getOrders = async (req, res, next) => {
-	const orders = await Order.find({'user.userId': req.user._id})
+	const orders = await Order.find({ "user.userId": req.user._id });
 	res.render("shop/orders", {
 		path: "/orders",
 		pageTitle: "Your Orders",
 		orders,
+		isAuthenticated: req.igLoggedIn,
 	});
 };
 
