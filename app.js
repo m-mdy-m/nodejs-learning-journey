@@ -14,7 +14,7 @@ const User = require("./models/user.js");
 const MONGODB_URL = "mongodb://localhost:27017/shop";
 
 const store = new MongoDBStore({
-	url: 'mongodb://localhost:27017/shop',
+	url: MONGODB_URL,
 	collection: "sessions",
 });
 
@@ -79,7 +79,7 @@ app.use(controllers404.Error404);
 // start();
 const start = async () => {
 	try {
-		const connect = await mongoose.connect('mongodb://localhost:27017/shop');
+		const connect = await mongoose.connect(MONGODB_URL);
 		console.log("connect database");
 		const user = await User.findOne();
 		if (!user) {

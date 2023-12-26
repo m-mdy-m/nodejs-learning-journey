@@ -5,7 +5,7 @@ exports.getAddProduct = (req, res, next) => {
 		pageTitle: "Add Product",
 		path: "/admin/add-product",
 		editing: false,
-		isAuthenticated: req.igLoggedIn,
+		isAuthenticated: req.session.isLoggedIn
 	});
 };
 
@@ -21,7 +21,8 @@ exports.postAddProduct = async (req, res, next) => {
 			price,
 			description,
 			imageUrl,
-			userId: req.user, // ** req.user._id    را انتخاب کنیم مونگوس ایدی ان را انتخاب میکند req.user فرقی ندارد حتی اگر
+			// userId: req.user, // ** req.user._id    را انتخاب کنیم مونگوس ایدی ان را انتخاب میکند req.user فرقی ندارد حتی اگر
+			userId: req.user
 		});
 		await product.save();
 		console.log("create user");
@@ -48,7 +49,7 @@ exports.getEditProduct = async (req, res, next) => {
 			path: "/admin/edit-product",
 			editing: editMode,
 			product: products,
-			isAuthenticated: req.igLoggedIn,
+			isAuthenticated: req.session.isLoggedIn 
 		});
 	} catch (err) {
 		console.log(err);
@@ -84,7 +85,7 @@ exports.getProducts = async (req, res, next) => {
 			prods: products,
 			pageTitle: "Admin Products",
 			path: "/admin/products",
-			isAuthenticated: req.igLoggedIn,
+			isAuthenticated: req.session.isLoggedIn 
 		});
 	} catch (e) {
 		console.log("e =>", e);
