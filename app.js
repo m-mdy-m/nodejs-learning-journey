@@ -14,10 +14,10 @@ const User = require("./models/user.js");
 const MONGODB_URL = "mongodb://localhost:27017/shop";
 
 const store = new MongoDBStore({
-	url: MONGODB_URL,
-	collection: "sessions",
+  url: 'mongodb://localhost:27017/shop',
+  collection: "sessions",
 });
-
+console.log('store =>', store)
 app.set("view engine", "ejs");
 app.set("views", "views");
 const adminRoutes = require("./routes/admin.js");
