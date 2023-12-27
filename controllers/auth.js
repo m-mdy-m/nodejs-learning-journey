@@ -16,6 +16,14 @@ exports.getLogin = (req, res, next) => {
 		isAuthenticated: false,
 	});
 };
+exports.getSignup = (req, res, next) => {
+	res.render("auth/signup", {
+		path: "/signup",
+		pageTitle: "Signup",
+		isAuthenticated: false,
+	});
+};
+
 exports.postLogin = async (req, res, next) => {
 	// req.igLoggedIn = true
 	// ** درواقع ما وقتی اینکار میکنیم با درتسور ریدایرکت این اطعلاعات به پایان مرسه و میمیره و دروافع انگار هیچ چیزی نیست که در اینجا کوکی هابه کمک ما می ایند
@@ -30,6 +38,8 @@ exports.postLogin = async (req, res, next) => {
 	});
 	// res.redirect("/");
 };
+exports.postSignup = (req, res, next) => {};
+
 exports.postLogout = async (req, res, next) => {
 	req.session.destroy(() => {
 		res.redirect("/");
