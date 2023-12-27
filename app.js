@@ -17,7 +17,6 @@ const store = new MongoDBStore({
   uri: MONGODB_URL,
   collection: "sessions",
 });
-console.log('store =>', store)
 app.set("view engine", "ejs");
 app.set("views", "views");
 const adminRoutes = require("./routes/admin.js");

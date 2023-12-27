@@ -38,7 +38,11 @@ exports.postLogin = async (req, res, next) => {
 	});
 	// res.redirect("/");
 };
-exports.postSignup = (req, res, next) => {};
+exports.postSignup = (req, res, next) => {
+	const email = req.body.email
+	const password = req.body.password
+	const confirmPassword = req.body.confirmPassword
+};
 
 exports.postLogout = async (req, res, next) => {
 	req.session.destroy(() => {
