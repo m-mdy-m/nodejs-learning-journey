@@ -14,7 +14,7 @@ const User = require("./models/user.js");
 const MONGODB_URL = "mongodb://localhost:27017/shop";
 
 const store = new MongoDBStore({
-  url: 'mongodb://localhost:27017/shop',
+  uri: MONGODB_URL,
   collection: "sessions",
 });
 console.log('store =>', store)
