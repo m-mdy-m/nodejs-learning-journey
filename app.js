@@ -50,6 +50,11 @@ app.use(csrfProtection)
 // 		console.log(err);
 // 	}
 // });
+app.use((req,res,nxt)=>{
+	res.locals.isAuthenticated = req.session.isLoggedIn
+	res.locals.csrfToken = req.csrfToken()
+	nxt()
+})
 app.use(async (req, res, nxt) => {
 	if (req.session.user) {
 		const user = await User.findById(req.session.user._id);
@@ -61,11 +66,7 @@ app.use(async (req, res, nxt) => {
 	// const user = await User.findById("65873ba802bcb4165b0167a6");
 });
 
-app.use((req,res,nxt)=>{
-	res.locals.isAuthenticated = req.session.isLoggedIn
-	res.locals.csrfToken = req.csrfToken()
-	nxt()
-})
+
 
 app.use("/admin", adminRoutes);
 
