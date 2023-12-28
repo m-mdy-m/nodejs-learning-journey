@@ -56,7 +56,7 @@ exports.postSignup = async (req, res, next) => {
 	return user.save()
 };
 
-exports.postLogout = async (req, res, next) => {
+exports.postLogout = (req, res, next) => {
 	req.session.destroy(() => {
 		res.redirect("/");
 	});

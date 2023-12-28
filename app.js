@@ -14,8 +14,8 @@ const User = require("./models/user.js");
 const MONGODB_URL = "mongodb://localhost:27017/shop";
 
 const store = new MongoDBStore({
-  uri: MONGODB_URL,
-  collection: "sessions",
+	uri: MONGODB_URL,
+	collection: "sessions",
 });
 app.set("view engine", "ejs");
 app.set("views", "views");
@@ -34,29 +34,29 @@ app.use(
 	})
 );
 
-app.use(async (req, res, next) => {
-	try {
-		const user = await User.findById("65873ba802bcb4165b0167a6");
-		if (!user) {
-			return res.redirect("/");
-		}
-		// req.user = user;
-		req.user = user;
-		next();
-	} catch (err) {
-		console.log(err);
-	}
-});
-app.use( async (req,res,nxt)=>{
-	if(req.session.user){
+// app.use(async (req, res, next) => {
+// 	try {
+// 		const user = await User.findById("65873ba802bcb4165b0167a6");
+// 		if (!user) {
+// 			return res.redirect("/");
+// 		}
+// 		// req.user = user;
+// 		req.user = user;
+// 		next();
+// 	} catch (err) {
+// 		console.log(err);
+// 	}
+// });
+app.use(async (req, res, nxt) => {
+	if (req.session.user) {
 		const user = await User.findById(req.session.user._id);
-		req.user = user
-		nxt()
-	}else{
-		 return nxt()
+		req.user = user;
+		nxt();
+	} else {
+		return nxt();
 	}
 	// const user = await User.findById("65873ba802bcb4165b0167a6");
-})
+});
 
 app.use("/admin", adminRoutes);
 
