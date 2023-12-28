@@ -38,10 +38,20 @@ exports.postLogin = async (req, res, next) => {
 	});
 	// res.redirect("/");
 };
-exports.postSignup = (req, res, next) => {
-	const email = req.body.email
-	const password = req.body.password
-	const confirmPassword = req.body.confirmPassword
+exports.postSignup = async (req, res, next) => {
+	const email = req.body.email;
+	const password = req.body.password;
+	const confirmPassword = req.body.confirmPassword;
+	var user = await User.findOne({ email });
+	if (user) {
+		res.redirect("/");
+	}
+	user = await User.create({
+		email,
+		password,
+		cart:{items: []}
+	});
+	return user.save()
 };
 
 exports.postLogout = async (req, res, next) => {
