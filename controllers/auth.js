@@ -9,7 +9,6 @@ exports.getLogin = (req, res, next) => {
 	// 		isLoggedIn = value;
 	// 	}
 	// });
-	console.log(req.session.isLoggedIn);
 	res.render("auth/login", {
 		path: "/login",
 		pageTitle: "Login",
@@ -33,8 +32,8 @@ exports.postLogin = async (req, res, next) => {
 	const email = req.body.email;
 	const password = req.body.password;
 	const user = await User.findOne({ email });
+	console.log("hi");
 	if (!user) {
-		console.log('flash =>', req.flash("error", "Invalid Email or Password"));
 		req.flash("error", "Invalid Email or Password");
 		return res.redirect("/signup");
 	}
@@ -45,6 +44,7 @@ exports.postLogin = async (req, res, next) => {
 		req.session.save();
 		return res.redirect("/");
 	}
+	req.flash("error", "Invalid Email or Password");
 	res.redirect("/login");
 
 	// res.redirect("/");
