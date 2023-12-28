@@ -6,6 +6,7 @@ const app = express();
 const controllers404 = require("./controllers/error.js");
 const session = require("express-session");
 const csrf = require('csurf')
+const flash = require('connect-flash')
 // const mongoConnect = require("./util/database").connect;
 
 const MongoDBStore = require("connect-mongodb-session")(session);
@@ -36,7 +37,7 @@ app.use(
 	})
 );
 app.use(csrfProtection)
-
+app.use(flash())
 // app.use(async (req, res, next) => {
 // 	try {
 // 		const user = await User.findById("65873ba802bcb4165b0167a6");

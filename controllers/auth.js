@@ -13,6 +13,7 @@ exports.getLogin = (req, res, next) => {
 	res.render("auth/login", {
 		path: "/login",
 		pageTitle: "Login",
+		errMessage : req.flash('error')
 	});
 };
 exports.getSignup = (req, res, next) => {
@@ -33,6 +34,7 @@ exports.postLogin = async (req, res, next) => {
 	const password = req.body.password;
 	const user = await User.findOne({ email });
 	if (!user) {
+		req.flash('error ', 'Invalid Email or Password')
 		return res.redirect("/signup");
 	}
 	const matchPass = await bcrypt.compare(password, user.password);
