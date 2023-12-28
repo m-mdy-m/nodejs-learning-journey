@@ -44,13 +44,15 @@ exports.postSignup = async (req, res, next) => {
 	const confirmPassword = req.body.confirmPassword;
 	var user = await User.findOne({ email });
 	if (user) {
-		res.redirect("/");
+		return res.redirect("/");
 	}
 	user = await User.create({
 		email,
 		password,
 		cart:{items: []}
 	});
+	console.log('created user')
+	res.redirect('/login')
 	return user.save()
 };
 

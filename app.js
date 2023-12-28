@@ -78,19 +78,9 @@ app.use(controllers404.Error404);
 // start();
 const start = async () => {
 	try {
-		const connect = await mongoose.connect(MONGODB_URL);
+		await mongoose.connect(MONGODB_URL);
 		console.log("connect database");
-		const user = await User.findOne();
-		if (!user) {
-			const user = new User({
-				name: "mahdi",
-				email: "mahdi@gmail.com",
-				cart: {
-					items: [],
-				},
-			});
-			user.save();
-		}
+
 		app.listen(3000, () => {
 			console.log("run server on port 3000");
 		});
