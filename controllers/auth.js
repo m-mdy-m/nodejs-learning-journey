@@ -1,6 +1,12 @@
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 exports.getLogin = (req, res, next) => {
+	let msgError = req.flash('error')
+	if(msgError.length >0){
+		msgError = msgError[0]
+	}else{
+		msgError = null
+	}
 	// const cookieArr = req.get("Cookie").split(",");
 	// let isLoggedIn = false;
 	// cookieArr.forEach(cookies => {
@@ -12,7 +18,7 @@ exports.getLogin = (req, res, next) => {
 	res.render("auth/login", {
 		path: "/login",
 		pageTitle: "Login",
-		errMessage: req.flash("error"),
+		errMessage: msgError,
 	});
 };
 exports.getSignup = (req, res, next) => {
@@ -34,8 +40,8 @@ exports.postLogin = async (req, res, next) => {
 	const user = await User.findOne({ email });
 	console.log("hi");
 	if (!user) {
-		req.flash("error", "Invalid Email or Password");
-		return res.redirect("/signup");
+		req.flash("error", "Invalid Email");
+		return res.redirect("/login");
 	}
 	const matchPass = await bcrypt.compare(password, user.password);
 	if (matchPass) {
@@ -44,7 +50,7 @@ exports.postLogin = async (req, res, next) => {
 		req.session.save();
 		return res.redirect("/");
 	}
-	req.flash("error", "Invalid Email or Password");
+	req.flash("error", "Invalid Password");
 	res.redirect("/login");
 
 	// res.redirect("/");
