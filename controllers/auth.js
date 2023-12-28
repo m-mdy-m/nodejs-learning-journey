@@ -1,5 +1,5 @@
 const User = require("../models/user");
-const bcrypt = require('bcryptjs')
+const bcrypt = require("bcryptjs");
 exports.getLogin = (req, res, next) => {
 	// const cookieArr = req.get("Cookie").split(",");
 	// let isLoggedIn = false;
@@ -29,32 +29,42 @@ exports.postLogin = async (req, res, next) => {
 	// ** درواقع ما وقتی اینکار میکنیم با درتسور ریدایرکت این اطعلاعات به پایان مرسه و میمیره و دروافع انگار هیچ چیزی نیست که در اینجا کوکی هابه کمک ما می ایند
 	// ست کردن کوکی ها =>
 	// res.setHeader("Set-Cookie", "loggedIn=true;"); // بجای اینکه از کوکی ها استفاده کنیم میتونیم از سشن ها استفاده کنیم
-	const user = await User.findById("65873ba802bcb4165b0167a6");
-	req.session.isLoggedIn = true;
-	req.session.user = user;
-	req.session.save(e => {
-		console.log(e);
-		res.redirect("/");
-	});
+	// const user = await User.findById("65873ba802bcb4165b0167a6"); /// ج
+	// چون ما دیگ یک کاربر نداریم و یک احراز هویت  واقعی داریم پس بدیهی هست که از یک ایدی خاض نمیتوینم شخصی پیدا کنیم بلکه میتونیم از طریق ایمیل ااونو پیدا کنیم
+	const email = req.body.email;
+	const password = req.body.password;
+	const user = await User.findOne({ email });
+	if (!user) {
+		return res.redirect("/signup");
+	}
+	const matchPass = await bcrypt.compare(password, user.password);
+	if (matchPass) {
+		req.session.isLoggedIn = true;
+		req.session.user = user;
+		req.session.save()
+		return res.redirect("/");
+	}
+	res.redirect("/login");
+
 	// res.redirect("/");
 };
 exports.postSignup = async (req, res, next) => {
 	const email = req.body.email;
 	const password = req.body.password;
 	const confirmPassword = req.body.confirmPassword;
-	const hashPass = await bcrypt.hash(password,12)
+	const hashPass = await bcrypt.hash(password, 12);
 	var user = await User.findOne({ email });
 	if (user) {
 		return res.redirect("/");
 	}
 	user = await User.create({
 		email,
-		password : hashPass,
-		cart:{items: []}
+		password: hashPass,
+		cart: { items: [] },
 	});
-	console.log('created user')
-	res.redirect('/login')
-	return user.save()
+	console.log("created user");
+	res.redirect("/login");
+	return user.save();
 };
 
 exports.postLogout = (req, res, next) => {
