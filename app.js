@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 const app = express();
 const controllers404 = require("./controllers/error.js");
 const session = require("express-session");
+const csrf = require('csurf')
 // const mongoConnect = require("./util/database").connect;
 
 const MongoDBStore = require("connect-mongodb-session")(session);
@@ -17,6 +18,7 @@ const store = new MongoDBStore({
 	uri: MONGODB_URL,
 	collection: "sessions",
 });
+const csrfProtection = csrf()
 app.set("view engine", "ejs");
 app.set("views", "views");
 const adminRoutes = require("./routes/admin.js");
@@ -33,6 +35,7 @@ app.use(
 		store: store,
 	})
 );
+app.use(csrfProtection)
 
 // app.use(async (req, res, next) => {
 // 	try {

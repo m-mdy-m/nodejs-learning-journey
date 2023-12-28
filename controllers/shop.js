@@ -8,7 +8,7 @@ exports.getProducts = async (req, res, next) => {
 			prods: products,
 			pageTitle: "All Products",
 			path: "/products",
-			isAuthenticated: req.session.isLoggedIn
+			isAuthenticated: req.session.isLoggedIn,
 		});
 	} catch (err) {
 		console.log(err);
@@ -23,7 +23,7 @@ exports.getProduct = async (req, res, next) => {
 			product: product,
 			pageTitle: product.title,
 			path: "/products",
-			isAuthenticated: req.session.isLoggedIn
+			isAuthenticated: req.session.isLoggedIn,
 		});
 	} catch (e) {
 		console.log("e =>", e);
@@ -37,8 +37,9 @@ exports.getIndex = async (req, res, next) => {
 			prods: products,
 			pageTitle: "Shop",
 			path: "/",
-		isAuthenticated: req.session.isLoggedIn
-	});
+			isAuthenticated: req.session.isLoggedIn,
+			csrfToken : req.csrfToken()
+		});
 	} catch (e) {
 		console.log("err =>", e);
 	}
@@ -46,14 +47,14 @@ exports.getIndex = async (req, res, next) => {
 
 exports.getCart = async (req, res, next) => {
 	try {
-		const user = await req.user.populate("cart.items.productId"); 
+		const user = await req.user.populate("cart.items.productId");
 
 		const products = user.cart.items;
 		res.render("shop/cart", {
 			path: "/cart",
 			pageTitle: "Your Cart",
 			products,
-			isAuthenticated: req.session.isLoggedIn
+			isAuthenticated: req.session.isLoggedIn,
 		});
 	} catch (error) {
 		console.log(error);
@@ -100,7 +101,7 @@ exports.getOrders = async (req, res, next) => {
 		path: "/orders",
 		pageTitle: "Your Orders",
 		orders,
-		isAuthenticated: req.session.isLoggedIn
+		isAuthenticated: req.session.isLoggedIn,
 	});
 };
 
