@@ -36,8 +36,8 @@ app.use(
 		store: store,
 	})
 );
-app.use(csrfProtection)
 app.use(flash())
+app.use(csrfProtection)
 // app.use(async (req, res, next) => {
 // 	try {
 // 		const user = await User.findById("65873ba802bcb4165b0167a6");

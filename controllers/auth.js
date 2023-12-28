@@ -34,6 +34,7 @@ exports.postLogin = async (req, res, next) => {
 	const password = req.body.password;
 	const user = await User.findOne({ email });
 	if (!user) {
+		console.log('flash =>', req.flash("error", "Invalid Email or Password"));
 		req.flash("error", "Invalid Email or Password");
 		return res.redirect("/signup");
 	}
