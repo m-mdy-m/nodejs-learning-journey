@@ -61,7 +61,8 @@ exports.postSignup = async (req, res, next) => {
 	const hashPass = await bcrypt.hash(password, 12);
 	var user = await User.findOne({ email });
 	if (user) {
-		return res.redirect("/");
+		req.flash("error", "E-Mail exists already , please pick a different "); /// ایمیل از قبل وجود داشته
+		return res.redirect("/signup");
 	}
 	user = await User.create({
 		email,
