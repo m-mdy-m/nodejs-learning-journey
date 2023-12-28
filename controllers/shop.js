@@ -37,8 +37,7 @@ exports.getIndex = async (req, res, next) => {
 			prods: products,
 			pageTitle: "Shop",
 			path: "/",
-			isAuthenticated: req.session.isLoggedIn,
-			csrfToken : req.csrfToken()
+			
 		});
 	} catch (e) {
 		console.log("err =>", e);
