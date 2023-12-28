@@ -42,13 +42,14 @@ exports.postSignup = async (req, res, next) => {
 	const email = req.body.email;
 	const password = req.body.password;
 	const confirmPassword = req.body.confirmPassword;
+	const hashPass = await bcrypt.hash(password,12)
 	var user = await User.findOne({ email });
 	if (user) {
 		return res.redirect("/");
 	}
 	user = await User.create({
 		email,
-		password,
+		password : hashPass,
 		cart:{items: []}
 	});
 	console.log('created user')
