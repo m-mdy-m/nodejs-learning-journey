@@ -41,7 +41,7 @@ exports.postLogin = async (req, res, next) => {
 	if (matchPass) {
 		req.session.isLoggedIn = true;
 		req.session.user = user;
-		req.session.save()
+		req.session.save();
 		return res.redirect("/");
 	}
 	res.redirect("/login");
