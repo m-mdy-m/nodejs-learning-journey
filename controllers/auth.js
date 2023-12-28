@@ -52,7 +52,6 @@ exports.postLogin = async (req, res, next) => {
 	}
 	req.flash("error", "Invalid Password");
 	res.redirect("/login");
-
 	// res.redirect("/");
 };
 exports.postSignup = async (req, res, next) => {
