@@ -1,5 +1,5 @@
 const User = require("../models/user");
-
+const bcrypt = require('bcryptjs')
 exports.getLogin = (req, res, next) => {
 	// const cookieArr = req.get("Cookie").split(",");
 	// let isLoggedIn = false;
