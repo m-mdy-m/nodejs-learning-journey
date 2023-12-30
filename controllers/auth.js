@@ -103,11 +103,24 @@ exports.getReset = (req,res,nxt)=>{
 	});
 }
 exports.postReset = (req,res,nxt)=>{
-	crypto.randomBytes(32 , (err , buffer)=>{
+	const email = req.body.email
+	crypto.randomBytes(32 , async (err , buffer)=>{
 		if(err){
 			console.log(err)
 			return res.redirect('/reset')
 		}
 		const token = buffer.toString('hex')
+		const user = await User.findOne({email})
+		if(!user){
+			res.flash('error ', 'No Account with Email')
+			return res.redirect('/reset')
+		}
+		console.log('token=>', token);
+		user.resetToken = token
+		user.resetTokenExpiration = Date.now() + 3600000
+		console.log('user.resetToken=>', user.resetToken);
+		console.log('user.resetTokenExpiration=>', user.resetTokenExpiration);
+		await user.save()
+		res.redirect('/')
 	})
 }
