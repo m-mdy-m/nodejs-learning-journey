@@ -88,3 +88,16 @@ exports.postLogout = (req, res, next) => {
 		res.redirect("/");
 	});
 };
+exports.getReset = (req,res,nxt)=>{
+	let msgError = req.flash("error");
+	if (msgError.length > 0) {
+		msgError = msgError[0];
+	} else {
+		msgError = null;
+	}
+	res.render("auth/rest", {
+		path: "/rest",
+		pageTitle: "REST PASSWORD",
+		errMessage: msgError,
+	});
+}
