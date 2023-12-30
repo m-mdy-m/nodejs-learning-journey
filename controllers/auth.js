@@ -1,4 +1,5 @@
 const User = require("../models/user");
+const crypto = require('crypto')
 const bcrypt = require("bcryptjs");
 
 exports.getLogin = (req, res, next) => {
@@ -100,4 +101,13 @@ exports.getReset = (req,res,nxt)=>{
 		pageTitle: "REST PASSWORD",
 		errMessage: msgError,
 	});
+}
+exports.postReset = (req,res,nxt)=>{
+	crypto.randomBytes(32 , (err , buffer)=>{
+		if(err){
+			console.log(err)
+			return res.redirect('/reset')
+		}
+		const token = buffer.toString('hex')
+	})
 }
