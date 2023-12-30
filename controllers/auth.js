@@ -161,8 +161,11 @@ exports.postNewPassword = async (req,res,nxt)=>{
 	const newPass = req.body.password
 	const userId = req.body.userId
 	const passwordToken = req.body.passwordToken
-
 	const user =  await User.findOne({resetToken : passwordToken , resetTokenExpiration : {$gt : Date.now()}, _id : userId})
 	const hashedPass = await bcrypt.hash(newPass,12)
-	
+	user.password = hashedPass
+	user.resetToken = undefined
+	user.resetTokenExpiration = undefined
+	await user.save()
+	res.redirect('/login')
 }
