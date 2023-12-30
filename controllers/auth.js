@@ -1,11 +1,12 @@
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
+
 exports.getLogin = (req, res, next) => {
-	let msgError = req.flash('error')
-	if(msgError.length >0){
-		msgError = msgError[0]
-	}else{
-		msgError = null
+	let msgError = req.flash("error");
+	if (msgError.length > 0) {
+		msgError = msgError[0];
+	} else {
+		msgError = null;
 	}
 	// const cookieArr = req.get("Cookie").split(",");
 	// let isLoggedIn = false;
@@ -22,11 +23,11 @@ exports.getLogin = (req, res, next) => {
 	});
 };
 exports.getSignup = (req, res, next) => {
-	let msgError = req.flash('error')
-	if(msgError.length >0){
-		msgError = msgError[0]
-	}else{
-		msgError = null
+	let msgError = req.flash("error");
+	if (msgError.length > 0) {
+		msgError = msgError[0];
+	} else {
+		msgError = null;
 	}
 	res.render("auth/signup", {
 		path: "/signup",
@@ -42,7 +43,7 @@ exports.postLogin = async (req, res, next) => {
 	// res.setHeader("Set-Cookie", "loggedIn=true;"); // بجای اینکه از کوکی ها استفاده کنیم میتونیم از سشن ها استفاده کنیم
 	// const user = await User.findById("65873ba802bcb4165b0167a6"); /// ج
 	// چون ما دیگ یک کاربر نداریم و یک احراز هویت  واقعی داریم پس بدیهی هست که از یک ایدی خاض نمیتوینم شخصی پیدا کنیم بلکه میتونیم از طریق ایمیل ااونو پیدا کنیم
-	
+
 	const email = req.body.email;
 	const password = req.body.password;
 	const user = await User.findOne({ email });
