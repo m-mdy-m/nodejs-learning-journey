@@ -18,14 +18,14 @@ exports.postAddProduct = async (req, res, next) => {
 		const price = req.body.price;
 		const description = req.body.description;
 		// const product = new Product(title, price, description, imageUrl,null, req.user._id);
-		console.log('req.user =>', req.session.user)
+		console.log("req.user =>", req.session.user);
 		const product = new Product({
 			title,
 			price,
 			description,
 			imageUrl,
 			// userId: req.user, // ** req.user._id    را انتخاب کنیم مونگوس ایدی ان را انتخاب میکند req.user فرقی ندارد حتی اگر
-			userId: req.session.user
+			userId: req.session.user,
 		});
 		await product.save();
 		console.log("create user");
@@ -67,6 +67,9 @@ exports.postEditProduct = async (req, res, next) => {
 	console.log("id =>", prodId);
 	try {
 		const product = await Product.findById(prodId);
+		if (product.userId.toString() !== req.session.user._id.toString()) {
+			return res.redirect("/");
+		}
 		product.title = updatedTitle;
 		product.price = updatedPrice;
 		product.description = updatedDesc;
@@ -80,7 +83,7 @@ exports.postEditProduct = async (req, res, next) => {
 
 exports.getProducts = async (req, res, next) => {
 	try {
-		const products = await Product.find({userId : req.session.user._id});
+		const products = await Product.find({ userId: req.session.user._id });
 		// .select("title price -_id")
 		// .populate("userId", "name");
 		res.render("admin/products", {
@@ -95,7 +98,9 @@ exports.getProducts = async (req, res, next) => {
 
 exports.postDeleteProduct = async (req, res, next) => {
 	const prodId = req.body.productId;
-	await Product.findByIdAndDelete(prodId);
+	console.log('user =>', req.user._id );
+	await Product.deleteOne({ _id: prodId, userId: req.user._id });
+	// await Product.findByIdAndDelete(prodId);
 	console.log("DESTROYED PRODUCT ");
 	res.redirect("/admin/products");
 };
