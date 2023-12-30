@@ -95,7 +95,7 @@ exports.getReset = (req,res,nxt)=>{
 	} else {
 		msgError = null;
 	}
-	res.render("auth/rest", {
+	res.render("auth/reset", {
 		path: "/rest",
 		pageTitle: "REST PASSWORD",
 		errMessage: msgError,
