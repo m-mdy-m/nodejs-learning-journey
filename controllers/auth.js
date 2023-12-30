@@ -1,7 +1,16 @@
 const User = require("../models/user");
+const nodemailer = require('nodemailer')
 const crypto = require('crypto')
 const bcrypt = require("bcryptjs");
 
+var transport = nodemailer.createTransport({
+	host: "sandbox.smtp.mailtrap.io",
+	port: 2525,
+	auth: {
+	  user: "7d555598001454",
+	  pass: "745c69e3e0c996"
+	}
+  });
 exports.getLogin = (req, res, next) => {
 	let msgError = req.flash("error");
 	if (msgError.length > 0) {
@@ -118,9 +127,13 @@ exports.postReset = (req,res,nxt)=>{
 		console.log('token=>', token);
 		user.resetToken = token
 		user.resetTokenExpiration = Date.now() + 3600000
-		console.log('user.resetToken=>', user.resetToken);
-		console.log('user.resetTokenExpiration=>', user.resetTokenExpiration);
 		await user.save()
+		await transport.sendMail({
+			from: 'mahdimamashli1383@gmail.com',
+			to: email,
+			subject: 'Password Reset',
+			html:`<a href="http://localhost:3000/reset/${token}">click</a>`
+		});
 		res.redirect('/')
 	})
 }
