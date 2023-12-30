@@ -18,13 +18,14 @@ exports.postAddProduct = async (req, res, next) => {
 		const price = req.body.price;
 		const description = req.body.description;
 		// const product = new Product(title, price, description, imageUrl,null, req.user._id);
+		console.log('req.user =>', req.session.user)
 		const product = new Product({
 			title,
 			price,
 			description,
 			imageUrl,
 			// userId: req.user, // ** req.user._id    را انتخاب کنیم مونگوس ایدی ان را انتخاب میکند req.user فرقی ندارد حتی اگر
-			userId: req.user
+			userId: req.session.user
 		});
 		await product.save();
 		console.log("create user");
@@ -79,7 +80,7 @@ exports.postEditProduct = async (req, res, next) => {
 
 exports.getProducts = async (req, res, next) => {
 	try {
-		const products = await Product.find();
+		const products = await Product.find({userId : req.session.user._id});
 		// .select("title price -_id")
 		// .populate("userId", "name");
 		res.render("admin/products", {
