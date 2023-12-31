@@ -11,7 +11,7 @@ exports.getAddProduct = (req, res, next) => {
 		editing: false,
 		hasError: false,
 		errMessage: null,
-		va
+		validationErrors: [],
 	});
 };
 
@@ -36,6 +36,7 @@ exports.postAddProduct = async (req, res, next) => {
 					description,
 				},
 				errMessage: errors.array()[0].msg,
+				validationErrors: errors.array(),
 			});
 		}
 		// const product = new Product(title, price, description, imageUrl,null, req.user._id);
@@ -75,6 +76,7 @@ exports.getEditProduct = async (req, res, next) => {
 			product: products,
 			hasError: false,
 			errMessage: null,
+			validationErrors: [],
 		});
 	} catch (err) {
 		console.log(err);
@@ -101,6 +103,7 @@ exports.postEditProduct = async (req, res, next) => {
 				description: updatedDesc,
 			},
 			errMessage: errors.array()[0].msg,
+			validationErrors: errors.array(),
 		});
 	}
 
