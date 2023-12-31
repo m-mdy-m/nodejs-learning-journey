@@ -1,5 +1,6 @@
 const Product = require("../models/product");
 const mongodb = require("mongodb");
+const { validationResult } = require('express-validator')
 exports.getAddProduct = (req, res, next) => {
 	// if(!req.session.isLoggedIn){
 	// 	return res.redirect('/login')
@@ -17,6 +18,10 @@ exports.postAddProduct = async (req, res, next) => {
 		const imageUrl = req.body.imageUrl;
 		const price = req.body.price;
 		const description = req.body.description;
+		const errors = validationResult(req)
+		if(!errors.isEmpty()){
+			
+		}
 		// const product = new Product(title, price, description, imageUrl,null, req.user._id);
 		console.log("req.user =>", req.session.user);
 		const product = new Product({
