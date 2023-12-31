@@ -98,9 +98,10 @@ exports.postEditProduct = async (req, res, next) => {
 			hasError: true,
 			product: {
 				title: updatedTitle,
-				imageUrl: updatedPrice,
-				price: updatedImageUrl,
+				imageUrl: updatedImageUrl,
+				price: updatedPrice,
 				description: updatedDesc,
+				_id: prodId,
 			},
 			errMessage: errors.array()[0].msg,
 			validationErrors: errors.array(),
