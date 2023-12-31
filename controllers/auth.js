@@ -76,7 +76,6 @@ exports.postLogin = async (req, res, next) => {
 exports.postSignup = async (req, res, next) => {
 	const email = req.body.email;
 	const password = req.body.password;
-	const confirmPassword = req.body.confirmPassword;
 	const errors = validationResult(req);
 	if (!errors.isEmpty()) {
 		console.log(errors.array()[0].msg);
@@ -87,12 +86,7 @@ exports.postSignup = async (req, res, next) => {
 		});
 	}
 	const hashPass = await bcrypt.hash(password, 12);
-	var user = await User.findOne({ email });
-	if (user) {
-		req.flash("error", "E-Mail exists already , please pick a different "); /// ایمیل از قبل وجود داشته
-		return res.redirect("/signup");
-	}
-	user = await User.create({
+	const user = await User.create({
 		email,
 		password: hashPass,
 		cart: { items: [] },
