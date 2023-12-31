@@ -10,7 +10,28 @@ const isAuth = require("../middleware/is-auth");
 const router = express.Router();
 
 // /admin/add-product => GET
-router.get("/add-product", isAuth, adminController.getAddProduct);
+router.get(
+	"/add-product",
+	[
+        body("title")
+        .isAlphanumeric()
+        .isLength({ min: 3 })
+        .trim(),
+        body("imageUrl")
+        .isURL(),
+        body("title")
+        .isAlphanumeric()
+        .isLength({ min: 3 })
+        .trim(),
+        body("title")
+        .isAlphanumeric()
+        .isLength({ min: 3 })
+        .trim(),
+    
+    ],
+	isAuth,
+	adminController.getAddProduct
+);
 
 // /admin/products => GET
 router.get("/products", isAuth, adminController.getProducts);
