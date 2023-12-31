@@ -10,6 +10,7 @@ exports.getAddProduct = (req, res, next) => {
 		path: "/admin/add-product",
 		editing: false,
 		hasError: false,
+		errMessage: null,
 	});
 };
 
@@ -32,6 +33,7 @@ exports.postAddProduct = async (req, res, next) => {
 					price,
 					description,
 				},
+				errMessage: errors.array()[0].msg,
 			});
 		}
 		// const product = new Product(title, price, description, imageUrl,null, req.user._id);
@@ -70,6 +72,7 @@ exports.getEditProduct = async (req, res, next) => {
 			editing: editMode,
 			product: products,
 			hasError: false,
+			errMessage: null,
 		});
 	} catch (err) {
 		console.log(err);
