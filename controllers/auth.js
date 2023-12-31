@@ -43,6 +43,12 @@ exports.getSignup = (req, res, next) => {
 		path: "/signup",
 		pageTitle: "Signup",
 		errMessage: msgError,
+		oldInput: {
+			email: "",
+			password: "",
+			confirmPassword: "",
+		},
+		validationErrors  : []
 	});
 };
 
@@ -56,6 +62,14 @@ exports.postLogin = async (req, res, next) => {
 
 	const email = req.body.email;
 	const password = req.body.password;
+	const errors = validationResult(req);
+	if (!errors.isEmpty()) {
+		return res.status(422).render("auth/login", {
+			path: "/login",
+			pageTitle: "Login",
+			errMessage: errors.array()[0].msg,
+		});
+	}
 	const user = await User.findOne({ email });
 	console.log("hi");
 	if (!user) {
@@ -83,6 +97,12 @@ exports.postSignup = async (req, res, next) => {
 			path: "/signup",
 			pageTitle: "Signup",
 			errMessage: errors.array()[0].msg,
+			oldInput: {
+				email,
+				password,
+				confirmPassword: req.body.confirmPassword,
+			},
+			validationErrors  : errors.array()
 		});
 	}
 	const hashPass = await bcrypt.hash(password, 12);
