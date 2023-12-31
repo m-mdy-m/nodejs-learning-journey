@@ -1,6 +1,6 @@
 const express = require("express");
 const authController = require("../controllers/auth");
-const { check } = require("express-validator");
+const { check, body } = require("express-validator");
 const router = express.Router();
 
 router.get("/login", authController.getLogin);
@@ -11,14 +11,23 @@ router.post("/login", authController.postLogin);
 
 router.post(
 	"/signup",
-	check("email")
-		.isEmail()
-		.withMessage("Please enter valid Email")
-		.custom((value, { req }) => {
-            if(value === 'test@gmail.com'){
-                throw new Error("this email address Errr")
-            }
-        }),
+	[
+		check("email")
+			.isEmail()
+			.withMessage("Please enter valid Email")
+			.custom((value, { req }) => {
+				if (value === "test@gmail.com") {
+					throw new Error("this email address Errr");
+				}
+				return true;
+			}),
+		body("password", "Pleas enter a password with only least 5 char")
+			.isLength({
+				min: 5,
+			})
+			.isAlphanumeric(),
+	],
+	// داخل یک ارایه انداختن واجب نیست ولی خوانایی بهتری داره
 	authController.postSignup
 );
 
