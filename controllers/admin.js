@@ -1,6 +1,6 @@
 const Product = require("../models/product");
 const mongodb = require("mongodb");
-const { validationResult } = require('express-validator')
+const { validationResult } = require("express-validator");
 exports.getAddProduct = (req, res, next) => {
 	// if(!req.session.isLoggedIn){
 	// 	return res.redirect('/login')
@@ -9,6 +9,7 @@ exports.getAddProduct = (req, res, next) => {
 		pageTitle: "Add Product",
 		path: "/admin/add-product",
 		editing: false,
+		hasError: false,
 	});
 };
 
@@ -18,9 +19,20 @@ exports.postAddProduct = async (req, res, next) => {
 		const imageUrl = req.body.imageUrl;
 		const price = req.body.price;
 		const description = req.body.description;
-		const errors = validationResult(req)
-		if(!errors.isEmpty()){
-			
+		const errors = validationResult(req);
+		if (!errors.isEmpty()) {
+			res.status(422).render("admin/edit-product", {
+				pageTitle: "Add Product",
+				path: "/admin/edit-product",
+				editing: false,
+				hasError: true,
+				product: {
+					title,
+					imageUrl,
+					price,
+					description,
+				},
+			});
 		}
 		// const product = new Product(title, price, description, imageUrl,null, req.user._id);
 		console.log("req.user =>", req.session.user);
@@ -57,6 +69,7 @@ exports.getEditProduct = async (req, res, next) => {
 			path: "/admin/edit-product",
 			editing: editMode,
 			product: products,
+			hasError: false,
 		});
 	} catch (err) {
 		console.log(err);
@@ -103,7 +116,7 @@ exports.getProducts = async (req, res, next) => {
 
 exports.postDeleteProduct = async (req, res, next) => {
 	const prodId = req.body.productId;
-	console.log('user =>', req.user._id );
+	console.log("user =>", req.user._id);
 	await Product.deleteOne({ _id: prodId, userId: req.user._id });
 	// await Product.findByIdAndDelete(prodId);
 	console.log("DESTROYED PRODUCT ");
