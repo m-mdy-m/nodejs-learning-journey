@@ -7,7 +7,20 @@ router.get("/login", authController.getLogin);
 
 router.get("/signup", authController.getSignup);
 
-router.post("/login", authController.postLogin);
+router.post(
+	"/login",
+	[
+		body("email")
+			.isEmail()
+			.withMessage("Please enter valid Email")
+			.normalizeEmail(),
+		body("password", "Password has to be Valid")
+			.isLength({ min: 5 })
+			.isAlphanumeric()
+			.trim(),
+	],
+	authController.postLogin
+);
 
 router.post(
 	"/signup",
@@ -22,15 +35,18 @@ router.post(
 				// return true;
 				var user = await User.findOne({ email: value });
 				if (user) {
-					return Promise.reject('E-Mail exists already , please pick a different')
+					return Promise.reject(
+						"E-Mail exists already , please pick a different"
+					);
 				}
-			}),
+			})
+			.normalizeEmail(),
 		body("password", "Pleas enter a password with only least 5 char")
 			.isLength({
 				min: 5,
 			})
-			.isAlphanumeric(),
-		body("confirmPassword").custom((value, { req }) => {
+			.isAlphanumeric().trim(),
+		body("confirmPassword").trim().custom((value, { req }) => {
 			if (value !== req.body.password) {
 				throw new Error("Password have to match!");
 			}
