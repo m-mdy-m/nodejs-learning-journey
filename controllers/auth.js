@@ -30,7 +30,10 @@ exports.getLogin = (req, res, next) => {
 		path: "/login",
 		pageTitle: "Login",
 		errMessage: msgError,
-		oldInput: { email: "", password: "" },
+		oldInput: {
+			email: "",
+			password: "",
+		},
 		validationErrors: [],
 	});
 };
@@ -66,7 +69,8 @@ exports.postLogin = async (req, res, next) => {
 	const password = req.body.password;
 	const errors = validationResult(req);
 	if (!errors.isEmpty()) {
-		console.log('errors.array() =>',errors.array());
+		let validationErrors = errors.array();
+		console.log("validationErrors =>", validationErrors);
 		return res.status(422).render("auth/login", {
 			path: "/login",
 			pageTitle: "Login",
@@ -75,7 +79,7 @@ exports.postLogin = async (req, res, next) => {
 				email,
 				password,
 			},
-			validationErrors: errors.array(),
+			validationErrors,
 		});
 	}
 	const user = await User.findOne({ email });
@@ -88,7 +92,7 @@ exports.postLogin = async (req, res, next) => {
 				email,
 				password,
 			},
-			validationErrors : []
+			validationErrors: [],
 			// validationErrors:[{path : 'email ', path : "password"}]
 		});
 	}
@@ -107,7 +111,7 @@ exports.postLogin = async (req, res, next) => {
 			email,
 			password,
 		},
-		validationErrors : []
+		validationErrors: [],
 		// validationErrors:[{path : 'email ', path : "password"}]
 	});
 	// res.redirect("/");
