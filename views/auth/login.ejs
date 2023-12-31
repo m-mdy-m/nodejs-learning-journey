@@ -10,7 +10,7 @@
         <% if (errMessage){ %>
             <div class="user-message user-message--error" ><%= errMessage  %></div>
         <% } %>
-        <form class="login-form" action="/login" method="POST">
+        <form class="login-form" action="/login" method="POST" novalidate>
             <div class="form-control">
                 <label for="email">E-Mail</label>
                 <input class="<%= validationErrors.find(e => e.path === 'email')? 'invalid': '' %>" type="email" name="email" id="email" value="<%= oldInput.email %>">
