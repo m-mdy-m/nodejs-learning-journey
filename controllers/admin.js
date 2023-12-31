@@ -11,6 +11,7 @@ exports.getAddProduct = (req, res, next) => {
 		editing: false,
 		hasError: false,
 		errMessage: null,
+		va
 	});
 };
 
@@ -22,7 +23,7 @@ exports.postAddProduct = async (req, res, next) => {
 		const description = req.body.description;
 		const errors = validationResult(req);
 		if (!errors.isEmpty()) {
-			console.log(errors.array())
+			console.log(errors.array());
 			return res.status(422).render("admin/edit-product", {
 				pageTitle: "Add Product",
 				path: "/admin/edit-product",
@@ -86,6 +87,23 @@ exports.postEditProduct = async (req, res, next) => {
 	const updatedPrice = req.body.price;
 	const updatedImageUrl = req.body.imageUrl;
 	const updatedDesc = req.body.description;
+	const errors = validationResult(req);
+	if (!errors.isEmpty()) {
+		return res.status(422).render("admin/edit-product", {
+			pageTitle: "Edit Product",
+			path: "/admin/edit-product",
+			editing: true,
+			hasError: true,
+			product: {
+				title: updatedTitle,
+				imageUrl: updatedPrice,
+				price: updatedImageUrl,
+				description: updatedDesc,
+			},
+			errMessage: errors.array()[0].msg,
+		});
+	}
+
 	console.log("id =>", prodId);
 	try {
 		const product = await Product.findById(prodId);
