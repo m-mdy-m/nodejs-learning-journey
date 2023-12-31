@@ -78,13 +78,14 @@ exports.postSignup = async (req, res, next) => {
 	const password = req.body.password;
 	const confirmPassword = req.body.confirmPassword;
 	const errors = validationResult(req);
-	if(errors.isEmpty()){
+	console.log(" errors =>", errors);
+	if (!errors.isEmpty()) {
 		console.log(errors.array());
 		return res.status(422).render("auth/signup", {
-		path: "/signup",
-		pageTitle: "Signup",
-		errMessage: errors.array(),
-	});
+			path: "/signup",
+			pageTitle: "Signup",
+			errMessage: errors.array(),
+		});
 	}
 	const hashPass = await bcrypt.hash(password, 12);
 	var user = await User.findOne({ email });
