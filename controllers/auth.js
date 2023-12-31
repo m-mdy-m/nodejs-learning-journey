@@ -2,7 +2,7 @@ const User = require("../models/user");
 const nodemailer = require("nodemailer");
 const crypto = require("crypto");
 const bcrypt = require("bcryptjs");
-
+const { validationResult } = require("express-validator");
 var transport = nodemailer.createTransport({
 	host: "sandbox.smtp.mailtrap.io",
 	port: 2525,
@@ -77,6 +77,15 @@ exports.postSignup = async (req, res, next) => {
 	const email = req.body.email;
 	const password = req.body.password;
 	const confirmPassword = req.body.confirmPassword;
+	const errors = validationResult(req);
+	if(errors.isEmpty()){
+		console.log(errors.array());
+		return res.status(422).render("auth/signup", {
+		path: "/signup",
+		pageTitle: "Signup",
+		errMessage: errors.array(),
+	});
+	}
 	const hashPass = await bcrypt.hash(password, 12);
 	var user = await User.findOne({ email });
 	if (user) {
@@ -153,19 +162,23 @@ exports.getNewPassword = async (req, res, nxt) => {
 		path: "/new-password",
 		pageTitle: "NEW PASSWORD",
 		errMessage: msgError,
-		userId : user._id.toString(),
-		passwordToken : token
+		userId: user._id.toString(),
+		passwordToken: token,
 	});
 };
-exports.postNewPassword = async (req,res,nxt)=>{
-	const newPass = req.body.password
-	const userId = req.body.userId
-	const passwordToken = req.body.passwordToken
-	const user =  await User.findOne({resetToken : passwordToken , resetTokenExpiration : {$gt : Date.now()}, _id : userId})
-	const hashedPass = await bcrypt.hash(newPass,12)
-	user.password = hashedPass
-	user.resetToken = undefined
-	user.resetTokenExpiration = undefined
-	await user.save()
-	res.redirect('/login')
-}
+exports.postNewPassword = async (req, res, nxt) => {
+	const newPass = req.body.password;
+	const userId = req.body.userId;
+	const passwordToken = req.body.passwordToken;
+	const user = await User.findOne({
+		resetToken: passwordToken,
+		resetTokenExpiration: { $gt: Date.now() },
+		_id: userId,
+	});
+	const hashedPass = await bcrypt.hash(newPass, 12);
+	user.password = hashedPass;
+	user.resetToken = undefined;
+	user.resetTokenExpiration = undefined;
+	await user.save();
+	res.redirect("/login");
+};
