@@ -22,7 +22,8 @@ exports.postAddProduct = async (req, res, next) => {
 		const description = req.body.description;
 		const errors = validationResult(req);
 		if (!errors.isEmpty()) {
-			res.status(422).render("admin/edit-product", {
+			console.log(errors.array())
+			return res.status(422).render("admin/edit-product", {
 				pageTitle: "Add Product",
 				path: "/admin/edit-product",
 				editing: false,
