@@ -30,6 +30,8 @@ exports.getLogin = (req, res, next) => {
 		path: "/login",
 		pageTitle: "Login",
 		errMessage: msgError,
+		oldInput: { email: "", password: "" },
+		validationErrors: [],
 	});
 };
 exports.getSignup = (req, res, next) => {
@@ -48,7 +50,7 @@ exports.getSignup = (req, res, next) => {
 			password: "",
 			confirmPassword: "",
 		},
-		validationErrors  : []
+		validationErrors: [],
 	});
 };
 
@@ -64,17 +66,31 @@ exports.postLogin = async (req, res, next) => {
 	const password = req.body.password;
 	const errors = validationResult(req);
 	if (!errors.isEmpty()) {
+		console.log('errors.array() =>',errors.array());
 		return res.status(422).render("auth/login", {
 			path: "/login",
 			pageTitle: "Login",
 			errMessage: errors.array()[0].msg,
+			oldInput: {
+				email,
+				password,
+			},
+			validationErrors: errors.array(),
 		});
 	}
 	const user = await User.findOne({ email });
-	console.log("hi");
 	if (!user) {
-		req.flash("error", "Invalid Email");
-		return res.redirect("/login");
+		return res.status(422).render("auth/login", {
+			path: "/login",
+			pageTitle: "Login",
+			errMessage: "Invalid Email",
+			oldInput: {
+				email,
+				password,
+			},
+			validationErrors : []
+			// validationErrors:[{path : 'email ', path : "password"}]
+		});
 	}
 	const matchPass = await bcrypt.compare(password, user.password);
 	if (matchPass) {
@@ -83,8 +99,17 @@ exports.postLogin = async (req, res, next) => {
 		req.session.save();
 		return res.redirect("/");
 	}
-	req.flash("error", "Invalid Password");
-	res.redirect("/login");
+	return res.status(422).render("auth/login", {
+		path: "/login",
+		pageTitle: "Login",
+		errMessage: "Invalid Email",
+		oldInput: {
+			email,
+			password,
+		},
+		validationErrors : []
+		// validationErrors:[{path : 'email ', path : "password"}]
+	});
 	// res.redirect("/");
 };
 exports.postSignup = async (req, res, next) => {
@@ -92,7 +117,8 @@ exports.postSignup = async (req, res, next) => {
 	const password = req.body.password;
 	const errors = validationResult(req);
 	if (!errors.isEmpty()) {
-		console.log(errors.array()[0].msg);
+		let validationErrors = errors.array();
+		validationErrors.find(e => console.log("e =>", e));
 		return res.status(422).render("auth/signup", {
 			path: "/signup",
 			pageTitle: "Signup",
@@ -102,7 +128,7 @@ exports.postSignup = async (req, res, next) => {
 				password,
 				confirmPassword: req.body.confirmPassword,
 			},
-			validationErrors  : errors.array()
+			validationErrors,
 		});
 	}
 	const hashPass = await bcrypt.hash(password, 12);
