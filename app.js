@@ -75,6 +75,7 @@ app.use("/admin", adminRoutes);
 app.use(ShopRouter);
 app.use(authRoute);
 app.use(controllers404.Error404);
+app.use('/500',controllers404.Error500);
 
 // const start = async () => {
 // 	try {

@@ -26,7 +26,7 @@ exports.postAddProduct = async (req, res, next) => {
 			console.log(errors.array());
 			return res.status(422).render("admin/edit-product", {
 				pageTitle: "Add Product",
-				path: "/admin/edit-product",
+				path: "/admin/add-product",
 				editing: false,
 				hasError: true,
 				product: {
@@ -53,8 +53,23 @@ exports.postAddProduct = async (req, res, next) => {
 		console.log("create user");
 		res.redirect("/");
 	} catch (err) {
-		console.log("Cannot create product =>", err);
-		res.status(500).send(err); // Send an error response
+		// console.log("Cannot create product =>", err);
+		// res.status(500).send(err); // Send an error response
+		// return res.status(500).render("admin/edit-product", {
+		// 	pageTitle: "Add Product",
+		// 	path: "/admin/add-product",
+		// 	editing: false,
+		// 	hasError: true,
+		// 	product: {
+		// 		title: "",
+		// 		imageUrl: "",
+		// 		price: "",
+		// 		description: "",
+		// 	},
+		// 	errMessage: "Database operation failed, please try agin",
+		// 	validationErrors: [],
+		// });
+		res.redirect('/500')
 	}
 };
 
