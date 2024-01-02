@@ -59,6 +59,7 @@ app.use((req,res,nxt)=>{
 app.use(async (req, res, nxt) => {
 	if (req.session.user) {
 		const user = await User.findById(req.session.user._id);
+		if (!user) return res.redirect("/login")
 		req.user = user;
 		nxt();
 	} else {
