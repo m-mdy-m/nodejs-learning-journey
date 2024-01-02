@@ -77,6 +77,11 @@ app.use(authRoute);
 app.use(controllers404.Error404);
 app.use('/500',controllers404.Error500);
 
+app.use((error,req,res,nxt)=>{
+	res.redirect('/500')
+})
+
+
 // const start = async () => {
 // 	try {
 // 		await mongoConnect();
