@@ -5,8 +5,8 @@ const bodyParser = require("body-parser");
 const app = express();
 const controllerErr = require("./controllers/error.js");
 const session = require("express-session");
-const csrf = require('csurf')
-const flash = require('connect-flash')
+const csrf = require("csurf");
+const flash = require("connect-flash");
 // const mongoConnect = require("./util/database").connect;
 
 const MongoDBStore = require("connect-mongodb-session")(session);
@@ -19,7 +19,7 @@ const store = new MongoDBStore({
 	uri: MONGODB_URL,
 	collection: "sessions",
 });
-const csrfProtection = csrf()
+const csrfProtection = csrf();
 app.set("view engine", "ejs");
 app.set("views", "views");
 const adminRoutes = require("./routes/admin.js");
@@ -36,8 +36,8 @@ app.use(
 		store: store,
 	})
 );
-app.use(flash())
-app.use(csrfProtection)
+app.use(flash());
+app.use(csrfProtection);
 // app.use(async (req, res, next) => {
 // 	try {
 // 		const user = await User.findById("65873ba802bcb4165b0167a6");
@@ -51,36 +51,43 @@ app.use(csrfProtection)
 // 		console.log(err);
 // 	}
 // });
-app.use((req,res,nxt)=>{
-	res.locals.isAuthenticated = req.session.isLoggedIn
-	res.locals.csrfToken = req.csrfToken()
-	nxt()
-})
+app.use((req, res, nxt) => {
+	res.locals.isAuthenticated = req.session.isLoggedIn;
+	res.locals.csrfToken = req.csrfToken();
+	nxt();
+});
 app.use(async (req, res, nxt) => {
-	if (req.session.user) {
-		const user = await User.findById(req.session.user._id);
-		if (!user) return res.redirect("/login")
-		req.user = user;
-		nxt();
-	} else {
-		return nxt();
+	try{
+		if (req.session.user) {
+			const user = await User.findById(req.session.user._id);
+			if (!user) return res.redirect("/login");
+			req.user = user;
+			nxt();
+		} else {
+			return nxt();
+		}
+	}catch(err){
+		nxt(new Error(err))
 	}
+	
 	// const user = await User.findById("65873ba802bcb4165b0167a6");
 });
-
-
 
 app.use("/admin", adminRoutes);
 
 app.use(ShopRouter);
 app.use(authRoute);
-app.use('/500',controllerErr.Error500);
+app.use("/500", controllerErr.Error500);
 app.use(controllerErr.Error404);
 
-app.use((error,req,res,nxt)=>{
-	res.redirect('/500')
-})
-
+app.use((error, req, res, nxt) => {
+	res.status(500).render("500", {
+		pageTitle: "pages 500",
+		path: req.path,
+		isAuthenticated: req.session.isLoggedIn,
+	});
+	// res.redirect("/500");
+});
 
 // const start = async () => {
 // 	try {
