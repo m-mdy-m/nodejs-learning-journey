@@ -97,7 +97,9 @@ exports.getEditProduct = async (req, res, next) => {
 			validationErrors: [],
 		});
 	} catch (err) {
-		console.log(err);
+		const error = new Error(err);
+		error.httpStatusCode = 500;
+		return next(error);
 	}
 };
 
@@ -139,7 +141,9 @@ exports.postEditProduct = async (req, res, next) => {
 		product.save();
 		return res.redirect("/");
 	} catch (err) {
-		console.log(err);
+		const error = new Error(err);
+		error.httpStatusCode = 500;
+		return next(error);
 	}
 };
 
@@ -154,15 +158,23 @@ exports.getProducts = async (req, res, next) => {
 			path: "/admin/products",
 		});
 	} catch (e) {
-		console.log("e =>", e);
+		const error = new Error(e);
+		error.httpStatusCode = 500;
+		return next(error);
 	}
 };
 
 exports.postDeleteProduct = async (req, res, next) => {
 	const prodId = req.body.productId;
-	console.log("user =>", req.user._id);
+	try{
+		console.log("user =>", req.user._id);
 	await Product.deleteOne({ _id: prodId, userId: req.user._id });
 	// await Product.findByIdAndDelete(prodId);
 	console.log("DESTROYED PRODUCT ");
 	res.redirect("/admin/products");
+	}catch(err){
+		const error = new Error(err);
+		error.httpStatusCode = 500;
+		return next(error);
+	}
 };

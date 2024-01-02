@@ -3,7 +3,7 @@ const path = require("path");
 const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
-const controllers404 = require("./controllers/error.js");
+const controllerErr = require("./controllers/error.js");
 const session = require("express-session");
 const csrf = require('csurf')
 const flash = require('connect-flash')
@@ -74,8 +74,8 @@ app.use("/admin", adminRoutes);
 
 app.use(ShopRouter);
 app.use(authRoute);
-app.use(controllers404.Error404);
-app.use('/500',controllers404.Error500);
+app.use('/500',controllerErr.Error500);
+app.use(controllerErr.Error404);
 
 app.use((error,req,res,nxt)=>{
 	res.redirect('/500')
