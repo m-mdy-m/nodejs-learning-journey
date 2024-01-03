@@ -81,9 +81,9 @@ app.use(csrfProtection);
 // 	}
 // });
 app.use((req, res, nxt) => {
-	res.locals.isAuthenticated = req.session.isLoggedIn;
-	res.locals.csrfToken = req.csrfToken();
-	nxt();
+    res.locals.isAuthenticated = req.session ? req.session.isLoggedIn : false;
+    res.locals.csrfToken = req.csrfToken();
+    nxt();
 });
 app.use(async (req, res, nxt) => {
 	try {
