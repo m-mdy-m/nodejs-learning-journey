@@ -144,7 +144,7 @@ exports.getInvoice = async (req, res, nxt) => {
 
 	order.products.forEach(prod => {
 		totalPrice += prod.quantity * prod.product.price;
-		pdfDoc.text(
+		pdfDoc.fontSize(16).text(
 			prod.product.title +
 				"-" +
 				prod.quantity +
@@ -153,7 +153,8 @@ exports.getInvoice = async (req, res, nxt) => {
 				prod.product.price
 		);
 	});
-	pdfDoc.text("ToTAL PRICE :$" + totalPrice);
+	pdfDoc.text("-------------------------");
+	pdfDoc.fontSize(20).text("ToTAL PRICE :$" + totalPrice);
 	pdfDoc.end();
 	// fs.readFile(invoicePath, (err, data) => {
 	// 	if (err) {
