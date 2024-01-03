@@ -112,24 +112,34 @@ exports.getCheckout = (req, res, next) => {
 };
 exports.getInvoice = async (req, res, nxt) => {
 	const orderId = req.params.orderId;
-	const order = await Order.findById(orderId)
-		if(!order){
-			return  nxt(new Error("No Order Found"))
-		}
-		if(order.user.userId.toString() !== req.user._id.toString()){
-			return nxt(new Error("Unauthorized"))
-		}
+	const order = await Order.findById(orderId);
+	if (!order) {
+		return nxt(new Error("No Order Found"));
+	}
+	if (order.user.userId.toString() !== req.user._id.toString()) {
+		return nxt(new Error("Unauthorized"));
+	}
 	const invoiceName = `invoice-${orderId}.pdf`;
 	console.log("invoiceName =>", invoiceName);
 
 	const invoicePath = path.join("data", "invoices", invoiceName);
 	console.log("invoicePath =>", invoicePath);
-	fs.readFile(invoicePath, (err, data) => {
-		if (err) {
-			return nxt(err);
-		}
-		res.setHeader("Content-Type", "application/pdf");
-		res.setHeader('Content-Disposition', 'attachment; filename="'+invoiceName + '"')
-		res.send(data);
-	});
+	// fs.readFile(invoicePath, (err, data) => {
+	// 	if (err) {
+	// 		return nxt(err);
+	// 	}
+	// 	res.setHeader("Content-Type", "application/pdf");
+	// 	res.setHeader(
+	// 		"Content-Disposition",
+	// 		'attachment; filename="' + invoiceName + '"'
+	// 	);
+	// 	res.send(data);
+	// });
+	const file = fs.createReadStream(invoicePath);
+	res.setHeader("Content-Type", "application/pdf");
+	res.setHeader(
+		"Content-Disposition",
+		'attachment; filename="' + invoiceName + '"'
+	);
+	file.pipe(res)
 };
