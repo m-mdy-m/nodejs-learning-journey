@@ -25,9 +25,7 @@ exports.postAddProduct = async (req, res, next) => {
 		const price = req.body.price;
 		const description = req.body.description;
 		const errors = validationResult(req);
-
-		const imageUrl = image[0].path;
-		console.log("pathj=>", imageUrl);
+		const imageUrl = image.path
 		if (!image) {
 			return res.status(422).render("admin/edit-product", {
 				pageTitle: "Add Product",
@@ -44,7 +42,7 @@ exports.postAddProduct = async (req, res, next) => {
 			});
 		}
 		if (!errors.isEmpty()) {
-			console.log(errors.array());
+			console.log('errors.array() =>',errors.array());
 			return res.status(422).render("admin/edit-product", {
 				pageTitle: "Add Product",
 				path: "/admin/add-product",
