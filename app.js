@@ -22,13 +22,16 @@ const store = new MongoDBStore({
 });
 const csrfProtection = csrf();
 const fileStorage = multer.diskStorage({
-	destination: (req, file, cb) => {
-		cb(null, "images");
-	},
-	filename: (req, file, cb) => {
-		cb(null, new Date().toISOString() + "-" + file.originalname);
-	},
+    destination: (req, file, cb) => {
+        cb(null, "images");
+    },
+    filename: (req, file, cb) => {
+        // Generating a unique filename with the current timestamp and original filename
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        cb(null, uniqueSuffix + '-' + file.originalname);
+    },
 });
+
 const fileFilter = (req, file, cb) => {
 	if (
 		file.mimetype === "image/png" ||
@@ -50,7 +53,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(
 	multer({
 		storage: fileStorage,
-		fileFilter: fileFilter,
+		fileFilter : fileFilter
 	}).single("image")
 );
 // app.use(multer({
@@ -81,9 +84,9 @@ app.use(csrfProtection);
 // 	}
 // });
 app.use((req, res, nxt) => {
-    res.locals.isAuthenticated = req.session ? req.session.isLoggedIn : false;
-    res.locals.csrfToken = req.csrfToken();
-    nxt();
+	res.locals.isAuthenticated = req.session.isLoggedIn;
+	res.locals.csrfToken = req.csrfToken();
+	nxt();
 });
 app.use(async (req, res, nxt) => {
 	try {
@@ -110,12 +113,12 @@ app.use("/500", controllerErr.Error500);
 app.use(controllerErr.Error404);
 
 app.use((error, req, res, nxt) => {
+	console.log("req =>", req.session.isLoggedIn);
 	res.status(500).render("500", {
 		pageTitle: "pages 500",
 		path: req.path,
 		isAuthenticated: req.session.isLoggedIn,
 	});
-	// res.redirect("/500");
 });
 
 // const start = async () => {
