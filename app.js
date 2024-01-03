@@ -7,7 +7,7 @@ const controllerErr = require("./controllers/error.js");
 const session = require("express-session");
 const csrf = require("csurf");
 const flash = require("connect-flash");
-const multer = require('multer')
+const multer = require("multer");
 // const mongoConnect = require("./util/database").connect;
 
 const MongoDBStore = require("connect-mongodb-session")(session);
@@ -21,6 +21,14 @@ const store = new MongoDBStore({
 	collection: "sessions",
 });
 const csrfProtection = csrf();
+const fileStorage = multer.diskStorage({
+	destination: (req, file, cb) => {
+		cb(null, "images");
+	},
+	filename: (req, file, cb) => {
+		cb(null, file.filename + "-" + file.originalname);
+	},
+});
 app.set("view engine", "ejs");
 app.set("views", "views");
 const adminRoutes = require("./routes/admin.js");
@@ -28,7 +36,14 @@ const ShopRouter = require("./routes/shop.js");
 const authRoute = require("./routes/auth.js");
 
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(multer({}).single('image'))
+app.use(
+	multer({
+		storage: fileStorage,
+	}).single("image")
+);
+// app.use(multer({
+// 	dest: 'images',
+// }).single('image'))
 app.use(express.static(path.join(__dirname, "public")));
 app.use(
 	session({
@@ -59,7 +74,7 @@ app.use((req, res, nxt) => {
 	nxt();
 });
 app.use(async (req, res, nxt) => {
-	try{
+	try {
 		if (req.session.user) {
 			const user = await User.findById(req.session.user._id);
 			if (!user) return res.redirect("/login");
@@ -68,10 +83,10 @@ app.use(async (req, res, nxt) => {
 		} else {
 			return nxt();
 		}
-	}catch(err){
-		nxt(new Error(err))
+	} catch (err) {
+		nxt(new Error(err));
 	}
-	
+
 	// const user = await User.findById("65873ba802bcb4165b0167a6");
 });
 
