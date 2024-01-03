@@ -19,11 +19,27 @@ exports.postAddProduct = async (req, res, next) => {
 	try {
 		const title = req.body.title;
 		// const imageUrl = req.body.image;
-		const imageUrl = req.file;
-		console.log("img=>", imageUrl);
+		const image = req.file;
+		
+		console.log("img=>", image);
 		const price = req.body.price;
 		const description = req.body.description;
 		const errors = validationResult(req);
+		if(!image){
+			return res.status(422).render("admin/edit-product", {
+				pageTitle: "Add Product",
+				path: "/admin/add-product",
+				editing: false,
+				hasError: true,
+				product: {
+					title,
+					price,
+					description,
+				},
+				errMessage: "Attached file is not a image",
+				validationErrors: [],
+			});
+		}
 		if (!errors.isEmpty()) {
 			console.log(errors.array());
 			return res.status(422).render("admin/edit-product", {
