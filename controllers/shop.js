@@ -2,7 +2,7 @@ const Product = require("../models/product");
 const Order = require("../models/order");
 const fs = require("fs");
 const path = require("path");
-const pdfkit = require('pdf')
+const PDFdocument = require("pdfkit");
 exports.getProducts = async (req, res, next) => {
 	const products = Product.find();
 	try {
@@ -125,6 +125,36 @@ exports.getInvoice = async (req, res, nxt) => {
 
 	const invoicePath = path.join("data", "invoices", invoiceName);
 	console.log("invoicePath =>", invoicePath);
+	const pdfDoc = new PDFdocument();
+	res.setHeader("Content-Type", "application/pdf");
+	res.setHeader(
+		"Content-Disposition",
+		'attachment; filename="' + invoiceName + '"'
+	);
+	pdfDoc.pipe(fs.createWriteStream(invoicePath));
+	pdfDoc.pipe(res);
+
+	// pdfDoc.text('hello ') // just example
+	// styling PDF
+	pdfDoc.fontSize(25).text("Invoice", {
+		underline: true,
+	});
+	pdfDoc.text("-------------------------");
+	let totalPrice = 0
+
+	order.products.forEach(prod => {
+		totalPrice += prod.quantity * prod.product.price
+		pdfDoc.text(
+			prod.product.title +
+				"-" +
+				prod.quantity +
+				"-" +
+				"$" +
+				prod.product.price
+		);
+	});
+	pdfDoc.text("ToTAL PRICE :$"+totalPrice)
+	pdfDoc.end();
 	// fs.readFile(invoicePath, (err, data) => {
 	// 	if (err) {
 	// 		return nxt(err);
@@ -136,11 +166,12 @@ exports.getInvoice = async (req, res, nxt) => {
 	// 	);
 	// 	res.send(data);
 	// });
-	const file = fs.createReadStream(invoicePath);
-	res.setHeader("Content-Type", "application/pdf");
-	res.setHeader(
-		"Content-Disposition",
-		'attachment; filename="' + invoiceName + '"'
-	);
-	file.pipe(res)
+	// ======
+	// const file = fs.createReadStream(invoicePath);
+	// res.setHeader("Content-Type", "application/pdf");
+	// res.setHeader(
+	// 	"Content-Disposition",
+	// 	'attachment; filename="' + invoiceName + '"'
+	// );
+	// file.pipe(res)
 };
