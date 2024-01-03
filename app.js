@@ -16,6 +16,9 @@ const User = require("./models/user.js");
 
 const MONGODB_URL = "mongodb://localhost:27017/shop";
 
+console.log('d=>', new Date().getFullYear);
+
+
 const store = new MongoDBStore({
 	uri: MONGODB_URL,
 	collection: "sessions",
@@ -26,9 +29,16 @@ const fileStorage = multer.diskStorage({
         cb(null, "images");
     },
     filename: (req, file, cb) => {
-        // Generating a unique filename with the current timestamp and original filename
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        cb(null, uniqueSuffix + '-' + file.originalname);
+        const currentDate = new Date();
+        const year = currentDate.getFullYear();
+        const month = ('0' + (currentDate.getMonth() + 1)).slice(-2); 
+        const day = ('0' + currentDate.getDate()).slice(-2);
+
+        const formattedDate = `${year}-${month}-${day}`;
+        file.originalname.split('.').pop(); 
+
+        const uniqueFileName = `${formattedDate}-${file.originalname}`;
+        cb(null, uniqueFileName);
     },
 });
 
