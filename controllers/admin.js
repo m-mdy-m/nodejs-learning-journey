@@ -127,7 +127,7 @@ exports.postEditProduct = async (req, res, next) => {
 	const prodId = req.body.productId;
 	const updatedTitle = req.body.title;
 	const updatedPrice = req.body.price;
-	const updatedImageUrl = req.body.imageUrl;
+	const image = req.file;
 	const updatedDesc = req.body.description;
 	const errors = validationResult(req);
 	if (!errors.isEmpty()) {
@@ -138,7 +138,6 @@ exports.postEditProduct = async (req, res, next) => {
 			hasError: true,
 			product: {
 				title: updatedTitle,
-				imageUrl: updatedImageUrl,
 				price: updatedPrice,
 				description: updatedDesc,
 				_id: prodId,
@@ -157,7 +156,9 @@ exports.postEditProduct = async (req, res, next) => {
 		product.title = updatedTitle;
 		product.price = updatedPrice;
 		product.description = updatedDesc;
-		product.imageUrl = updatedImageUrl;
+		if(image){
+			product.imageUrl = image.path;
+		}
 		product.save();
 		return res.redirect("/");
 	} catch (err) {
