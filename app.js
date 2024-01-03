@@ -16,9 +16,6 @@ const User = require("./models/user.js");
 
 const MONGODB_URL = "mongodb://localhost:27017/shop";
 
-console.log('d=>', new Date().getFullYear);
-
-
 const store = new MongoDBStore({
 	uri: MONGODB_URL,
 	collection: "sessions",

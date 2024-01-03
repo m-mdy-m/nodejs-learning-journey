@@ -20,12 +20,15 @@ exports.postAddProduct = async (req, res, next) => {
 		const title = req.body.title;
 		// const imageUrl = req.body.image;
 		const image = req.file;
-		
-		console.log("img=>", image);
+
+		console.log("img=>", image.path);
 		const price = req.body.price;
 		const description = req.body.description;
 		const errors = validationResult(req);
-		if(!image){
+
+		const imageUrl = image[0].path;
+		console.log("pathj=>", imageUrl);
+		if (!image) {
 			return res.status(422).render("admin/edit-product", {
 				pageTitle: "Add Product",
 				path: "/admin/add-product",
@@ -59,6 +62,7 @@ exports.postAddProduct = async (req, res, next) => {
 		}
 		// const product = new Product(title, price, description, imageUrl,null, req.user._id);
 		console.log("req.user =>", req.session.user);
+
 		const product = new Product({
 			title,
 			price,
