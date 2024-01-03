@@ -1,6 +1,7 @@
 const Product = require("../models/product");
 const Order = require("../models/order");
-
+const fs = require('fs')
+const path = require('path')
 exports.getProducts = async (req, res, next) => {
 	const products = Product.find();
 	try {
@@ -110,3 +111,14 @@ exports.getCheckout = (req, res, next) => {
 		pageTitle: "Checkout",
 	});
 };
+exports.getInvoice = async (req,res,nxt)=>{
+	const orderId = req.params.orderId
+	const invoiceName = `invoice-${orderId}.pdf`
+	const invoicePath = path.join('data ', 'invoices',invoiceName)
+	fs.readFile(invoicePath, (err,data)=>{
+		if(err){
+			return nxt(err)
+		}
+		res.send(data)
+	})
+}
