@@ -1,7 +1,7 @@
 const Product = require("../models/product");
 const Order = require("../models/order");
-const fs = require('fs')
-const path = require('path')
+const fs = require("fs");
+const path = require("path");
 exports.getProducts = async (req, res, next) => {
 	const products = Product.find();
 	try {
@@ -38,7 +38,6 @@ exports.getIndex = async (req, res, next) => {
 			prods: products,
 			pageTitle: "Shop",
 			path: "/",
-			
 		});
 	} catch (e) {
 		console.log("err =>", e);
@@ -111,14 +110,20 @@ exports.getCheckout = (req, res, next) => {
 		pageTitle: "Checkout",
 	});
 };
-exports.getInvoice = async (req,res,nxt)=>{
-	const orderId = req.params.orderId
-	const invoiceName = `invoice-${orderId}.pdf`
-	const invoicePath = path.join('data ', 'invoices',invoiceName)
-	fs.readFile(invoicePath, (err,data)=>{
-		if(err){
-			return nxt(err)
+exports.getInvoice = async (req, res, nxt) => {
+	const orderId = req.params.orderId;
+
+	const invoiceName = `invoice-${orderId}.pdf`;
+	console.log("invoiceName =>", invoiceName);
+
+	const invoicePath = path.join("data", "invoices", invoiceName);
+	console.log("invoicePath =>", invoicePath);
+	fs.readFile(invoicePath, (err, data) => {
+		if (err) {
+			return nxt(err);
 		}
-		res.send(data)
-	})
-}
+		res.setHeader("Content-Type", "application/pdf");
+		res.setHeader('Content-Disposition', 'attachment; filename="'+invoiceName + '"')
+		res.send(data);
+	});
+};
