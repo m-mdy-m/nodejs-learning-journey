@@ -2,6 +2,7 @@ const Product = require("../models/product");
 const Order = require("../models/order");
 const fs = require("fs");
 const path = require("path");
+const pdfkit = require('pdf')
 exports.getProducts = async (req, res, next) => {
 	const products = Product.find();
 	try {
