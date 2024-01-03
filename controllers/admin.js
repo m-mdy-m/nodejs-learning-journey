@@ -18,7 +18,9 @@ exports.getAddProduct = (req, res, next) => {
 exports.postAddProduct = async (req, res, next) => {
 	try {
 		const title = req.body.title;
-		const imageUrl = req.body.image;
+		// const imageUrl = req.body.image;
+		const imageUrl = req.file;
+		console.log("img=>", imageUrl);
 		const price = req.body.price;
 		const description = req.body.description;
 		const errors = validationResult(req);
@@ -166,13 +168,13 @@ exports.getProducts = async (req, res, next) => {
 
 exports.postDeleteProduct = async (req, res, next) => {
 	const prodId = req.body.productId;
-	try{
+	try {
 		console.log("user =>", req.user._id);
-	await Product.deleteOne({ _id: prodId, userId: req.user._id });
-	// await Product.findByIdAndDelete(prodId);
-	console.log("DESTROYED PRODUCT ");
-	res.redirect("/admin/products");
-	}catch(err){
+		await Product.deleteOne({ _id: prodId, userId: req.user._id });
+		// await Product.findByIdAndDelete(prodId);
+		console.log("DESTROYED PRODUCT ");
+		res.redirect("/admin/products");
+	} catch (err) {
 		const error = new Error(err);
 		error.httpStatusCode = 500;
 		return next(error);
