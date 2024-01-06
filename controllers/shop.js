@@ -3,6 +3,8 @@ const Order = require("../models/order");
 const fs = require("fs");
 const path = require("path");
 const PDFdocument = require("pdfkit");
+
+const ITEMS_PER_PAGE = 2;
 exports.getProducts = async (req, res, next) => {
 	const products = Product.find();
 	try {
@@ -33,8 +35,11 @@ exports.getProduct = async (req, res, next) => {
 };
 
 exports.getIndex = async (req, res, next) => {
+	const page = req.query.page;
 	try {
-		const products = await Product.find();
+		const products = await Product.find()
+			.skip((page - 1) * ITEMS_PER_PAGE)
+			.limit(ITEMS_PER_PAGE);
 		res.render("shop/index", {
 			prods: products,
 			pageTitle: "Shop",
@@ -144,14 +149,16 @@ exports.getInvoice = async (req, res, nxt) => {
 
 	order.products.forEach(prod => {
 		totalPrice += prod.quantity * prod.product.price;
-		pdfDoc.fontSize(16).text(
-			prod.product.title +
-				"-" +
-				prod.quantity +
-				"-" +
-				"$" +
-				prod.product.price
-		);
+		pdfDoc
+			.fontSize(16)
+			.text(
+				prod.product.title +
+					"-" +
+					prod.quantity +
+					"-" +
+					"$" +
+					prod.product.price
+			);
 	});
 	pdfDoc.text("-------------------------");
 	pdfDoc.fontSize(20).text("ToTAL PRICE :$" + totalPrice);
