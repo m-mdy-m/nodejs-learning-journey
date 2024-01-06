@@ -201,7 +201,8 @@ form {
 	text-align: center;
 }
 .pagination a:hover,
-.pagination .active {
+.pagination a:active,
+.pagination a.active {
 	background-color: #00695c;
 	color: white;
 }
