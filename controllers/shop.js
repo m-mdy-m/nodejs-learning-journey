@@ -132,11 +132,22 @@ exports.getOrders = async (req, res, next) => {
 	});
 };
 
-exports.getCheckout = (req, res, next) => {
-	res.render("shop/checkout", {
-		path: "/checkout",
-		pageTitle: "Checkout",
-	});
+exports.getCheckout = async (req, res, next) => {
+	try {
+		const user = await req.user.populate("cart.items.productId");
+		let total = 0;
+		const products = user.cart.items;
+		products.forEach(p => [(total += p.quantity * p.productId.price)]);
+		res.render("shop/checkout", {
+			path: "/checkout",
+			pageTitle: "Checkout",
+			products,
+			totalSum: total,
+		});
+	} catch (error) {
+		console.log(error);
+		next(error); // Handle the error
+	}
 };
 exports.getInvoice = async (req, res, nxt) => {
 	const orderId = req.params.orderId;

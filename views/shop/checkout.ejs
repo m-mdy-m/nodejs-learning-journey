@@ -1,0 +1,19 @@
+<%- include('../includes/head.ejs') %>
+    </head>
+
+    <body>
+        <%- include('../includes/navigation.ejs') %>
+        <main>
+            <ul>
+                <% products.forEach(p => { %>
+                    <li>
+                        <p><%= p.productId.title %> </p>
+                        <h2>qty :(<%= p.quantity %>) </h2>
+                    </li>
+                <% }) %>
+            </ul>
+            <div>
+                <h2>Total : <%= totalSum %></h2>
+            </div>
+        </main>
+        <%- include('../includes/end.ejs') %>
