@@ -4,7 +4,7 @@
   "description": "Welcome to my Node.js learning journey repository!",
   "main": "index.js",
   "scripts": {
-    "start": "nodmon app.js"
+    "start": "nodemon app.js"
   },
   "keywords": [],
   "author": "",
