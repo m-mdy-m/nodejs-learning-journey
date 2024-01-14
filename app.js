@@ -2,6 +2,7 @@ const express =require('express')
 const bodyParser = require('body-parser')
 const app = express()
 const feedRoute = require('./routes/feed')
+const mongoose = require('mongoose')
 // app.use(bodyParser.urlencoded()) // x-www-form-url => <form> -> درواقع این برای فرم هاست و ما فرمی نداریم برای restApi
 app.use(bodyParser.json()) /// application/json 
 
@@ -13,6 +14,15 @@ app.use((req,res,nxt)=>{
 })
 
 app.use(feedRoute)
-app.listen(3000, ()=>{
-    console.log('run server on port 3000')
-})
+const start = async ()=>{
+    try{
+        await mongoose.connect('mongodb://localhost:27017/')
+        console.log('connect database')
+        app.listen(3000, ()=>{
+            console.log('run server on port 3000')
+        })
+    }catch(er){
+        console.log(er)
+    }
+}
+start()
