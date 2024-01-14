@@ -3,9 +3,10 @@ const bodyParser = require('body-parser')
 const app = express()
 const feedRoute = require('./routes/feed')
 const mongoose = require('mongoose')
+const path = require('path')
 // app.use(bodyParser.urlencoded()) // x-www-form-url => <form> -> درواقع این برای فرم هاست و ما فرمی نداریم برای restApi
 app.use(bodyParser.json()) /// application/json 
-
+app.use("images", express.static(path.join(__dirname , 'images')))
 app.use((req,res,nxt)=>{
     res.setHeader("Access-Control-Allow-Origin", '*') // یعنی هرکسی از هرسایتی میتون به محتوای ما دسترسی داشته باشد
     res.setHeader("Access-Control-Allow-Methods",'OPTIONS,GET,POST,PUT,PATCH,DELETE') // میتونند با این متد ها استفاده کنند
