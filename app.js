@@ -16,7 +16,7 @@ app.use((req,res,nxt)=>{
 app.use(feedRoute)
 const start = async ()=>{
     try{
-        await mongoose.connect('mongodb://localhost:27017/')
+        await mongoose.connect('mongodb://localhost:27017/testRestAPi')
         console.log('connect database')
         app.listen(3000, ()=>{
             console.log('run server on port 3000')
