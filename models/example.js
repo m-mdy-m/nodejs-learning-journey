@@ -13,6 +13,7 @@ const example = new Schema({
     _creator:{
         type : Object,
         required : String,   // یعنی این به صورت ابجکته و همه رشته هستند
+        // example => creator :{ name : "MAHDI"}
     },
 }, {timeseries : true})
 
